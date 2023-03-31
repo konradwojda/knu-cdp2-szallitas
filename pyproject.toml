@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=52", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "szallitas"
+version = "0.0.1"
+dependencies = []
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages]
+find = {namespaces = true, exclude = ["tests", "tests.*"]}
+
+[tool.black]
+line-length = 99
+
+[tool.isort]
+profile = "black"
+line_length = 99
+
+[tool.pyright]
+typeCheckingMode = "strict"
