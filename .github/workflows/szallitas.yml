@@ -1,0 +1,34 @@
+name: Szallitas CI
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        pip install -U pip wheel setuptools
+        pip install -Ur requirements.dev.txt
+    - name: Check code formatting (with black)
+      run: black --check .
+    - name: Ensure imports have proper ordering (with isort)
+      run: isort --check .
+    - name: Perform typechecking (with pyright)
+      run: pyright
+    - name: Check django migrations
+      run: python szallitas/manage.py makemigrations --check --dry-run
+    - name: Test (with pytest)
+      run: python szallitas/manage.py test
