@@ -8,4 +8,4 @@ class Agency(models.Model):
     telephone = models.CharField(max_length=32, null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Agencies"
+        verbose_name_plural = "Agencies "
