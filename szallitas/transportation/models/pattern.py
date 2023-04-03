@@ -20,5 +20,5 @@ class Pattern(models.Model):
 class PatternStop(models.Model):
     pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
     stop = models.ForeignKey(Stop, on_delete=models.CASCADE)
-    travel_time = models.PositiveSmallIntegerField(max_length=6)
-    index = models.SmallIntegerField(max_length=6)
+    travel_time = models.PositiveSmallIntegerField()
+    index = models.SmallIntegerField()

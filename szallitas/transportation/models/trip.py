@@ -7,6 +7,6 @@ from .stop import WheelchairAccessibility
 
 class Trip(models.Model):
     wheelchair_accessible = models.IntegerField(choices=WheelchairAccessibility.choices)
-    departure = models.IntegerField(max_length=6)
+    departure = models.IntegerField()
     pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
