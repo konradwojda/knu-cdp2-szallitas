@@ -32,4 +32,3 @@ jobs:
       run: python szallitas/manage.py makemigrations --check --dry-run
     - name: Test (with pytest)
       run: python szallitas/manage.py test
-      
