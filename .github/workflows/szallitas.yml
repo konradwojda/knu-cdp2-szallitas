@@ -2,9 +2,9 @@ name: Szallitas CI
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
   pull_request:
-    branches: ["master"]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -22,13 +22,13 @@ jobs:
       run: |
         pip install -U pip wheel setuptools
         pip install -Ur requirements.dev.txt
-    - name: Check code formatting (with black)
+    - name: Check code formatting
       run: black --check .
-    - name: Ensure imports have proper ordering (with isort)
+    - name: Ensure imports have proper ordering
       run: isort --check .
-    - name: Perform typechecking (with pyright)
+    - name: Perform typechecking
       run: pyright
     - name: Check django migrations
       run: python szallitas/manage.py makemigrations --check --dry-run
-    - name: Test (with pytest)
+    - name: Test
       run: python szallitas/manage.py test
