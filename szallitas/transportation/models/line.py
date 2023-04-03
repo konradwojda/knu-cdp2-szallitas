@@ -19,5 +19,5 @@ class Line(models.Model):
 
     code = models.CharField(max_length=16)
     description = models.CharField(max_length=128, blank=True, null=True)
-    type_ = models.IntegerField(choices=LineType.choices)
+    line_type = models.IntegerField(choices=LineType.choices)
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
