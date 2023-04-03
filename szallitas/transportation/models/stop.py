@@ -1,7 +1,7 @@
 from django.db import models
 
-class Stop(models.Model):
 
+class Stop(models.Model):
     class WheelchairAccessibility(models.IntegerChoices):
         NO_INFO = 0
         ACCESSIBLE = 1
