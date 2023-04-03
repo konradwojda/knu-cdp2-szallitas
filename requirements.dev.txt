@@ -4,3 +4,4 @@ black
 isort
 pyright
 flake8
+django-types
