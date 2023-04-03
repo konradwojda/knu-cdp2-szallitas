@@ -4,8 +4,6 @@ from .line import Line
 from .stop import Stop
 
 
-
-
 class Pattern(models.Model):
     class Direction(models.IntegerChoices):
         INBOUND = 0
@@ -14,7 +12,9 @@ class Pattern(models.Model):
     headsign = models.CharField(max_length=64)
     direction = models.IntegerField(choices=Direction.choices, null=True, blank=True)
     line = models.ForeignKey(Line, on_delete=models.CASCADE)
-    stops: "models.ManyToManyField[Stop, PatternStop]" = models.ManyToManyField(Stop, through="PatternStop")
+    stops: "models.ManyToManyField[Stop, PatternStop]" = models.ManyToManyField(
+        Stop, through="PatternStop"
+    )
 
 
 class PatternStop(models.Model):
