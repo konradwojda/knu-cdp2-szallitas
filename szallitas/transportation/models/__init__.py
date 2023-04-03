@@ -1,6 +1,6 @@
 from .agency import Agency
-from .line import Line
-from .stop import Stop
-from .pattern import PatternStop, Pattern
-from .trip import Trip
 from .calendar import Calendar, CalendarException
+from .line import Line
+from .pattern import Pattern, PatternStop
+from .stop import Stop
+from .trip import Trip

@@ -1,7 +1,8 @@
 from django.db import models
-from .stop import WheelchairAccessibility
-from .pattern import Pattern
+
 from .calendar import Calendar
+from .pattern import Pattern
+from .stop import WheelchairAccessibility
 
 
 class Trip(models.Model):
