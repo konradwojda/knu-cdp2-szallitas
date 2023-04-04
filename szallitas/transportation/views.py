@@ -17,6 +17,6 @@ def stop(request: HttpRequest, stop_id: int) -> HttpResponse:
     return render(request, "transportation/stop.html", context)
 
 
-def line_at_stop(request: HttpRequest, line_id: int, stop_id: int) -> HttpResponse:
+def timetable(request: HttpRequest, line_id: int, stop_id: int) -> HttpResponse:
     context = {"stop_id": stop_id, "line_id": line_id}
-    return render(request, "transportation/line_stop.html", context)
+    return render(request, "transportation/timetable.html", context)
