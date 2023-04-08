@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#003377">
+    <title>{% block title %}Szallitas{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <header class="nav-bar">
+        <nav class="nav">
+            <span class="nav-logo"><a href="/transportation/">SZALLITAS</a></span>
+            <a href="/transportation/#stops" class="nav-link">Stops</a>
+            <a href="/transportation/#lines" class="nav-link">Lines</a>
+        </nav>
+    </header>
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>
