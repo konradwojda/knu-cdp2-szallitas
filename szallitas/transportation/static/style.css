@@ -1,0 +1,135 @@
+@font-face {
+    font-family: "Jost";
+    src: url("/static/Jost.ttf");
+}
+
+:root {
+    --color-bg: #fff;
+    --color-fg: #000;
+    --color-alt1-bg: #555;
+    --color-alt1-fg: #fff;
+    --color-alt2-bg: #333;
+    --color-alt2-fg: #fff;
+    --color-accent: #037;
+    --color-text-on-accent: #fff;
+
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: #000;
+        --color-fg: #fff;
+        --color-alt1-bg: #444;
+        --color-alt1-fg: #fff;
+        --color-alt2-bg: #222;
+        --color-alt2-fg: #fff;
+    }
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: var(--color-text-on-accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/**********
+ * HEADER *
+ **********/
+
+.nav-bar {
+    color: var(--color-text-on-accent);
+    background-color: var(--color-accent);
+}
+
+.nav {
+    display: flex;
+    font-size: 1.3rem;
+    margin: 0 auto;
+    max-width: 76rem;
+    padding: 1rem .5rem;
+}
+
+.nav-logo {
+    flex: auto;
+    margin: auto 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.nav-logo>a:hover {
+    text-decoration: none;
+}
+
+.nav-link {
+    flex: initial;
+    display: inline-block;
+    margin: .1rem 0;
+    color: rgba(255, 255, 255, .8);
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .2);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: .3rem;
+    transition: color .1s, background-color .1s, border-color .1s;
+    padding: .35rem .7rem;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-link+.nav-link {
+    margin-left: .5rem;
+}
+
+@media screen and (max-width: 24rem) {
+    .nav {
+        flex-direction: column;
+        padding: 0.33rem 0.5rem;
+        text-align: center;
+    }
+
+    .nav-logo {
+        flex: initial;
+    }
+
+    .nav-link {
+        padding: .1rem .7rem;
+    }
+
+    .nav-link+.nav-link {
+        margin-left: 0;
+        margin-top: .2rem;
+    }
+}
+
+
+/****************
+ * MAIN CONTENT *
+ ****************/
+
+.content {
+    max-width: 76rem;
+    padding: 1.5rem 0rem;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
