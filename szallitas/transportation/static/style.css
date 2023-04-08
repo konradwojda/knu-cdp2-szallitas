@@ -6,12 +6,10 @@
 :root {
     --color-bg: #fff;
     --color-fg: #000;
-    --color-alt1-bg: #555;
-    --color-alt1-fg: #fff;
-    --color-alt2-bg: #333;
-    --color-alt2-fg: #fff;
-    --color-accent: #037;
-    --color-text-on-accent: #fff;
+    --color-alt-bg: #ddd;
+    --color-alt-fg: #000;
+    --color-accent-bg: #037;
+    --color-accent-fg: #fff;
 
     font-family: "Jost", sans-serif;
     font-size: 16px;
@@ -23,10 +21,8 @@
     :root {
         --color-bg: #000;
         --color-fg: #fff;
-        --color-alt1-bg: #444;
-        --color-alt1-fg: #fff;
-        --color-alt2-bg: #222;
-        --color-alt2-fg: #fff;
+        --color-alt-bg: #222;
+        --color-alt-fg: #fff;
     }
 }
 
@@ -36,7 +32,7 @@ body {
 }
 
 a {
-    color: var(--color-text-on-accent);
+    color: var(--color-accent-fg);
     text-decoration: none;
 }
 
@@ -53,8 +49,8 @@ a:hover {
  **********/
 
 .nav-bar {
-    color: var(--color-text-on-accent);
-    background-color: var(--color-accent);
+    color: var(--color-accent-fg);
+    background-color: var(--color-accent-bg);
 }
 
 .nav {
@@ -129,7 +125,68 @@ a:hover {
 
 .content {
     max-width: 76rem;
-    padding: 1.5rem 0rem;
+    padding: .5rem .5rem;
     margin: 0 auto;
     font-size: 1.1rem;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+@media screen and (min-width: 76.5rem) {
+    .content {
+        padding: .5rem 0;
+    }
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.content ul,
+.content ol {
+    margin-top: 0;
+}
+
+.content table {
+    text-align: unset;
+    display: block;
+    width: 100%;
+    overflow: auto;
+    border-collapse: collapse;
+    word-break: normal;
+    -webkit-overflow-scrolling: touch;
+}
+
+.content table th,
+.content table td {
+    padding: 0.5rem 1rem;
+}
+
+.content table th {
+    font-weight: bold;
+    background-color: var(--color-accent-bg);
+    color: var(--color-accent-fg);
+}
+
+.content table tr:nth-child(even) {
+    background-color: var(--color-alt-bg);
+    color: var(--color-alt-fg);
+}
+
+.content table td,
+.content th {
+    border: 1px solid var(--color-fg)
+}
+
+.content hr {
+    border: 1px inset var(--color-fg);
+    height: 0;
+    padding: 0;
+    margin: 1rem 0;
+    clear: both;
 }
