@@ -1,7 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from .models.line import Line
+
 from .models.agency import Agency
+from .models.line import Line
 
 
 def index(request: HttpRequest) -> HttpResponse:

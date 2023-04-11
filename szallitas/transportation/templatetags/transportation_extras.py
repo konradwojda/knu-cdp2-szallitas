@@ -15,6 +15,7 @@ ROUTE_TYPE_DATA: dict[int, str] = {
     12: "🚝",
 }
 
+
 @register.filter(name="line_emoji")
 def line_type_to_emoji(value: int) -> str:
     return ROUTE_TYPE_DATA[value]
