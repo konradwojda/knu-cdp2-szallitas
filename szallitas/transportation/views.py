@@ -1,10 +1,16 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.template import loader
+from .models.line import Line
+from .models.agency import Agency
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return render(request, "transportation/index.html")
+    agency = Agency(name="Metro Warszawskie", website="metro.waw.pl")
+    line1 = Line(code="M1", line_type=1, agency=agency)
+    line2 = Line(code="M2", line_type=1, agency=agency)
+    # TODO: provide Line.objects.all()
+    context = {"lines": [line1, line2]}
+    return render(request, "transportation/index.html", context)
 
 
 def line(request: HttpRequest, line_id: int) -> HttpResponse:
