@@ -1,5 +1,7 @@
 {% extends "transportation/base.html" %}
 {% block headinsert %}
+
+<!-- JQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">
 </script>
 
@@ -8,6 +10,26 @@
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
     type="text/css" />
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin="anonymous" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin="anonymous"></script>
+
+<!-- Leaflet.markercluster -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+    integrity="sha512-mQ77VzAakzdpWdgfL/lM1ksNy89uFgibRQANsNneSTMD/bj0Y/8+94XMwYhnbzx8eki2hrbPpDm0vD0CiT2lcg=="
+    crossorigin="anonymous" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+    integrity="sha512-6ZCLMiYwTeli2rVh3XAPxy3YoR5fVxGdH/pz+KMCzRY2M65Emgkw00Yqmhh8qLGeYQ3LbVZGdmOX9KUjSKr0TA=="
+    crossorigin="anonymous" />
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
+    integrity="sha512-OFs3W4DIZ5ZkrDhBFtsCP6JXtMEDGmhl0QPlmWYBJay40TT1n3gt2Xuw8Pf/iezgW9CdabjkNChRqozl/YADmg=="
+    crossorigin="anonymous"></script>
+
 {% endblock %}
 {% block title %}Szallitas - Home{% endblock %}
 {% block content %}
@@ -18,7 +40,7 @@
 </div>
 <div>
     <h3>Select a stop</h3>
-    <div id="map">Map here</div>
+    <div id="map" style="height: 500px;"></div>
 </div>
 <h3>Select a line</h3>
 <ul class="route-list-container">
@@ -67,5 +89,34 @@
         }
     )
 
+    const map = L.map("map");
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Tiles &copy; <a href="https://wiki.osmfoundation.org/wiki/Terms_of_Use">OpenStreetMap Foundation</a>',
+        maxZoom: 18
+    }).addTo(map);
+    const markers = L.markerClusterGroup().addTo(map);
+
+    fetch("api/stops").then(response => response.json()).then(stops => stops.forEach(stop => {
+        let lat = stop.lat;
+        let lon = stop.lon;
+        if (isNaN(lat) || isNaN(lon)) return;
+
+        const popup = document.createElement("span");
+        const boldAnchor = document.createElement("b");
+        const anchor = document.createElement("a");
+        anchor.append(`${stop.name}`);
+        boldAnchor.append(anchor)
+        popup.append(boldAnchor, document.createElement("br"));
+
+        const redirect_anchor = document.createElement("a");
+        redirect_anchor.href = `stop/${encodeURIComponent(stop.id)}`;
+        redirect_anchor.append("Departures");
+        popup.append(redirect_anchor, document.createElement("br"));
+
+
+        const marker = L.marker([lat, lon]);
+        marker.bindPopup(popup);
+        marker.addTo(markers);
+    })).then(() => map.fitBounds(markers.getBounds()));
 </script>
 {% endblock %}
