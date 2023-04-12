@@ -102,11 +102,9 @@
         if (isNaN(lat) || isNaN(lon)) return;
 
         const popup = document.createElement("span");
-        const boldAnchor = document.createElement("b");
-        const anchor = document.createElement("a");
-        anchor.append(`${stop.name}`);
-        boldAnchor.append(anchor)
-        popup.append(boldAnchor, document.createElement("br"));
+        const boldTitle = document.createElement("b");
+        boldTitle.append(`${stop.name}`);
+        popup.append(boldTitle, document.createElement("br"));
 
         const redirect_anchor = document.createElement("a");
         redirect_anchor.href = `stop/${encodeURIComponent(stop.id)}`;
