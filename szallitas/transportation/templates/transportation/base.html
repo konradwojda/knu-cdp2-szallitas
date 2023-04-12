@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#003377">
     <title>{% block title %}Szallitas{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
+    {% block headinsert %}{% endblock %}
 </head>
 
 <body>
@@ -21,5 +22,5 @@
         {% block content %}{% endblock %}
     </main>
 </body>
-
+{% block scriptinsert %}{% endblock %}
 </html>
