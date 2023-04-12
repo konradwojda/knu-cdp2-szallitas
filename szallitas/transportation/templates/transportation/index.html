@@ -23,40 +23,46 @@
 <h3>Select a line</h3>
 <ul class="route-list-container">
     {% for line in lines %}
-    <li><a href="/line/{{line.id}}">{{line.line_type|line_emoji}}{{line.code}}</a></li>
+    <li><a href="line/{{line.id}}">{{line.line_type|line_emoji}}{{line.code}}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
 
 {% block scriptinsert %}
 <script>
-    $(function () {
-        var availableLines = [
-            {% for line in lines %}
-            ["{{line.code}}","{{line.id}}"],
-        {% endfor %}
-        ];
-    var availableStops = [
-        {% for stop in stops %}
-    ["{{stop.name}}", "{{stop.id}}"]
-    {% endfor %}
-        ];
-    var stops = availableStops.map(tuple => tuple[0]);
-    var lines = availableLines.map(tuple => tuple[0]);
-    var availableItems = stops.concat(lines);
-    $("#items").autocomplete({
-        source: availableItems,
-        select: function(event, item) {
-            var line_id = availableLines.find(tuple => tuple[0] === item.item.value)?.[1];
-            if(line_id){
-                window.location.href = "/line/" + line_id;
-            }
-            var stop_id = availableStops.find(tuple => tuple[0] === item.item.value)?.[1];
-            if(stop_id) {
-                window.location = "/stop/" + stop_id;
-            }
+    async function load() {
+        const lines_response = await fetch("api/lines");
+        const lines = await lines_response.json();
+        const availableLines = lines.map(line => [line.code, line.id]);
+
+        const stops_response = await fetch("api/stops");
+        const stops = await stops_response.json();
+        const availableStops = stops.map(stop => [stop.name, stop.id]);
+        return [availableLines, availableStops];
+    }
+
+    load().then(
+        function([availableLines, availableStops]) {
+            $(function () {
+            var stops = availableStops.map(tuple => tuple[0]);
+            var lines = availableLines.map(tuple => tuple[0]);
+            var availableItems = stops.concat(lines);
+            $("#items").autocomplete({
+                source: availableItems,
+                select: function(event, item) {
+                    var line_id = availableLines.find(tuple => tuple[0] === item.item.value)?.[1];
+                    if(line_id){
+                        window.location.href = "line/" + line_id;
+                    }
+                    var stop_id = availableStops.find(tuple => tuple[0] === item.item.value)?.[1];
+                    if(stop_id) {
+                        window.location = "stop/" + stop_id;
+                    }
+                }
+            });
+        } );
         }
-    });
-} );
+    )
+
 </script>
 {% endblock %}
