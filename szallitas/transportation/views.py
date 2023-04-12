@@ -1,26 +1,12 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 
-from .models.agency import Agency
 from .models.line import Line
 from .models.stop import Stop
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    # agency = Agency(name="Metro Warszawskie", website="metro.waw.pl")
-    agency = Agency.objects.create(name="Metro Warszawskie", website="metro.waw.pl")
-    line1 = Line.objects.create(code="M1", line_type=1, agency=agency)
-    line2 = Line.objects.create(code="M2", line_type=1, agency=agency)
-    stop1 = Stop.objects.create(name="Stop1", lat=52.2, lon=21.01, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=52.34, lon=22.02, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=50.2, lon=20.04, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=53, lon=24.4, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=52, lon=20, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=52, lon=21, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=55.05, lon=23, wheelchair_accessible=0)
-    stop1 = Stop.objects.create(name="Stop1", lat=50, lon=20, wheelchair_accessible=0)
-    # TODO: provide Line.objects.all()
-    context = {"lines": [line1, line2], "stops": [stop1]}
+    context = {}
     return render(request, "transportation/index.html", context)
 
 
