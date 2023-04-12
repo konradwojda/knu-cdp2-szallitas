@@ -1,0 +1,2028 @@
+{
+    "patterns": [
+        {
+            "line": "A1",
+            "direction": 0,
+            "headsign": "Podkowa Leśna Główna",
+            "stops": [
+                {
+                    "stop": "wsrod",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "wocho",
+                    "travel_time": 120
+                },
+                {
+                    "stop": "wzach",
+                    "travel_time": 300
+                },
+                {
+                    "stop": "wreor",
+                    "travel_time": 420
+                },
+                {
+                    "stop": "walje",
+                    "travel_time": 540
+                },
+                {
+                    "stop": "wrako",
+                    "travel_time": 660
+                },
+                {
+                    "stop": "wsalo",
+                    "travel_time": 780
+                },
+                {
+                    "stop": "opacz",
+                    "travel_time": 900
+                },
+                {
+                    "stop": "micha",
+                    "travel_time": 1080
+                },
+                {
+                    "stop": "regul",
+                    "travel_time": 1200
+                },
+                {
+                    "stop": "malic",
+                    "travel_time": 1320
+                },
+                {
+                    "stop": "twork",
+                    "travel_time": 1500
+                },
+                {
+                    "stop": "prusz",
+                    "travel_time": 1620
+                },
+                {
+                    "stop": "komor",
+                    "travel_time": 1800
+                },
+                {
+                    "stop": "nwwar",
+                    "travel_time": 1920
+                },
+                {
+                    "stop": "kanie",
+                    "travel_time": 2040
+                },
+                {
+                    "stop": "otreb",
+                    "travel_time": 2160
+                },
+                {
+                    "stop": "plwsc",
+                    "travel_time": 2280
+                },
+                {
+                    "stop": "plglo",
+                    "travel_time": 2460
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "C",
+                    "departure": 18300
+                },
+                {
+                    "calendar": "C",
+                    "departure": 20400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 21600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 24000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 25200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 27600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 28800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 31200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 32400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 34800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 36000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 38400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 39600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 42000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 43200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 45600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 46800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 49200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 50400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 52800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 54000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 56400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 57600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 60000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 61200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 63600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 64800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 67200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 68400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 70800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 72000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 74400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 75600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 78600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 83100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 16200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 18600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 19500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 20400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 21300
+                },
+                {
+                    "calendar": "D",
+                    "departure": 23100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 24000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 25080
+                },
+                {
+                    "calendar": "D",
+                    "departure": 26160
+                },
+                {
+                    "calendar": "D",
+                    "departure": 27600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 28500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 29160
+                },
+                {
+                    "calendar": "D",
+                    "departure": 29820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 30480
+                },
+                {
+                    "calendar": "D",
+                    "departure": 31140
+                },
+                {
+                    "calendar": "D",
+                    "departure": 31800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 32700
+                },
+                {
+                    "calendar": "D",
+                    "departure": 33600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 34500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 35400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 36300
+                },
+                {
+                    "calendar": "D",
+                    "departure": 37200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 38100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 39000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 39900
+                },
+                {
+                    "calendar": "D",
+                    "departure": 40800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 41700
+                },
+                {
+                    "calendar": "D",
+                    "departure": 42600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 43500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 44400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 45300
+                },
+                {
+                    "calendar": "D",
+                    "departure": 46200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 47100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 48000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 48720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 49440
+                },
+                {
+                    "calendar": "D",
+                    "departure": 50280
+                },
+                {
+                    "calendar": "D",
+                    "departure": 50880
+                },
+                {
+                    "calendar": "D",
+                    "departure": 51600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 52320
+                },
+                {
+                    "calendar": "D",
+                    "departure": 53040
+                },
+                {
+                    "calendar": "D",
+                    "departure": 53760
+                },
+                {
+                    "calendar": "D",
+                    "departure": 54480
+                },
+                {
+                    "calendar": "D",
+                    "departure": 55920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 56640
+                },
+                {
+                    "calendar": "D",
+                    "departure": 57360
+                },
+                {
+                    "calendar": "D",
+                    "departure": 58080
+                },
+                {
+                    "calendar": "D",
+                    "departure": 59520
+                },
+                {
+                    "calendar": "D",
+                    "departure": 60240
+                },
+                {
+                    "calendar": "D",
+                    "departure": 60960
+                },
+                {
+                    "calendar": "D",
+                    "departure": 61680
+                },
+                {
+                    "calendar": "D",
+                    "departure": 63120
+                },
+                {
+                    "calendar": "D",
+                    "departure": 63840
+                },
+                {
+                    "calendar": "D",
+                    "departure": 64560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 65280
+                },
+                {
+                    "calendar": "D",
+                    "departure": 66720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 67440
+                },
+                {
+                    "calendar": "D",
+                    "departure": 68160
+                },
+                {
+                    "calendar": "D",
+                    "departure": 68880
+                },
+                {
+                    "calendar": "D",
+                    "departure": 70320
+                },
+                {
+                    "calendar": "D",
+                    "departure": 71760
+                },
+                {
+                    "calendar": "D",
+                    "departure": 72480
+                },
+                {
+                    "calendar": "D",
+                    "departure": 73200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 75000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 76560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 77400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 78300
+                },
+                {
+                    "calendar": "D",
+                    "departure": 83100
+                }
+            ]
+        },
+        {
+            "line": "ZA12",
+            "direction": 0,
+            "headsign": "Milanówek Grudów",
+            "stops": [
+                {
+                    "stop": "plglo",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "poles",
+                    "travel_time": 300
+                },
+                {
+                    "stop": "milgr",
+                    "travel_time": 420
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "C",
+                    "departure": 21120
+                },
+                {
+                    "calendar": "C",
+                    "departure": 23520
+                },
+                {
+                    "calendar": "C",
+                    "departure": 26820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 30420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 34020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 37620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 41220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 44820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 48420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 52020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 55620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 59220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 62820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 66420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 70020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 73620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 77220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 81420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 85920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 19020
+                },
+                {
+                    "calendar": "D",
+                    "departure": 21420
+                },
+                {
+                    "calendar": "D",
+                    "departure": 24120
+                },
+                {
+                    "calendar": "D",
+                    "departure": 27900
+                },
+                {
+                    "calendar": "D",
+                    "departure": 31320
+                },
+                {
+                    "calendar": "D",
+                    "departure": 34620
+                },
+                {
+                    "calendar": "D",
+                    "departure": 38220
+                },
+                {
+                    "calendar": "D",
+                    "departure": 41820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 45420
+                },
+                {
+                    "calendar": "D",
+                    "departure": 49020
+                },
+                {
+                    "calendar": "D",
+                    "departure": 53100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 56580
+                },
+                {
+                    "calendar": "D",
+                    "departure": 59460
+                },
+                {
+                    "calendar": "D",
+                    "departure": 63060
+                },
+                {
+                    "calendar": "D",
+                    "departure": 66660
+                },
+                {
+                    "calendar": "D",
+                    "departure": 70260
+                },
+                {
+                    "calendar": "D",
+                    "departure": 73200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 77820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 81120
+                },
+                {
+                    "calendar": "D",
+                    "departure": 85920
+                }
+            ]
+        },
+        {
+            "line": "A1",
+            "direction": 0,
+            "headsign": "Grodzisk Mazowiecki Radońska",
+            "stops": [
+                {
+                    "stop": "wsrod",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "wocho",
+                    "travel_time": 120
+                },
+                {
+                    "stop": "wzach",
+                    "travel_time": 300
+                },
+                {
+                    "stop": "wreor",
+                    "travel_time": 420
+                },
+                {
+                    "stop": "walje",
+                    "travel_time": 540
+                },
+                {
+                    "stop": "wrako",
+                    "travel_time": 660
+                },
+                {
+                    "stop": "wsalo",
+                    "travel_time": 780
+                },
+                {
+                    "stop": "opacz",
+                    "travel_time": 900
+                },
+                {
+                    "stop": "micha",
+                    "travel_time": 1080
+                },
+                {
+                    "stop": "regul",
+                    "travel_time": 1200
+                },
+                {
+                    "stop": "malic",
+                    "travel_time": 1320
+                },
+                {
+                    "stop": "twork",
+                    "travel_time": 1500
+                },
+                {
+                    "stop": "prusz",
+                    "travel_time": 1620
+                },
+                {
+                    "stop": "komor",
+                    "travel_time": 1800
+                },
+                {
+                    "stop": "nwwar",
+                    "travel_time": 1920
+                },
+                {
+                    "stop": "kanie",
+                    "travel_time": 2040
+                },
+                {
+                    "stop": "otreb",
+                    "travel_time": 2160
+                },
+                {
+                    "stop": "plwsc",
+                    "travel_time": 2280
+                },
+                {
+                    "stop": "plglo",
+                    "travel_time": 2640
+                },
+                {
+                    "stop": "plzac",
+                    "travel_time": 2760
+                },
+                {
+                    "stop": "kazim",
+                    "travel_time": 2940
+                },
+                {
+                    "stop": "brzoz",
+                    "travel_time": 3120
+                },
+                {
+                    "stop": "gmokr",
+                    "travel_time": 3240
+                },
+                {
+                    "stop": "gmpia",
+                    "travel_time": 3360
+                },
+                {
+                    "stop": "gmjor",
+                    "travel_time": 3480
+                },
+                {
+                    "stop": "gmrad",
+                    "travel_time": 3780
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "C",
+                    "departure": 19200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 22800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 26400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 30000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 33600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 37200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 40800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 44400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 48000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 51600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 55200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 58800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 62400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 66000
+                },
+                {
+                    "calendar": "C",
+                    "departure": 69600
+                },
+                {
+                    "calendar": "C",
+                    "departure": 73200
+                },
+                {
+                    "calendar": "C",
+                    "departure": 76800
+                },
+                {
+                    "calendar": "C",
+                    "departure": 80400
+                },
+                {
+                    "calendar": "C",
+                    "departure": 81720
+                },
+                {
+                    "calendar": "C",
+                    "departure": 84960
+                },
+                {
+                    "calendar": "C",
+                    "departure": 86280
+                },
+                {
+                    "calendar": "C",
+                    "departure": 87600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 17400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 22200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 26880
+                },
+                {
+                    "calendar": "D",
+                    "departure": 55200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 58800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 62400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 66000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 69600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 71040
+                },
+                {
+                    "calendar": "D",
+                    "departure": 74400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 75720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 79080
+                },
+                {
+                    "calendar": "D",
+                    "departure": 80400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 81720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 84960
+                },
+                {
+                    "calendar": "D",
+                    "departure": 86280
+                },
+                {
+                    "calendar": "D",
+                    "departure": 87600
+                }
+            ]
+        },
+        {
+            "line": "A1",
+            "direction": 1,
+            "headsign": "Warszawa Śródmieście WKD",
+            "stops": [
+                {
+                    "stop": "gmrad",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "gmjor",
+                    "travel_time": 180
+                },
+                {
+                    "stop": "gmpia",
+                    "travel_time": 300
+                },
+                {
+                    "stop": "gmokr",
+                    "travel_time": 420
+                },
+                {
+                    "stop": "brzoz",
+                    "travel_time": 540
+                },
+                {
+                    "stop": "kazim",
+                    "travel_time": 720
+                },
+                {
+                    "stop": "plzac",
+                    "travel_time": 900
+                },
+                {
+                    "stop": "plglo",
+                    "travel_time": 1260
+                },
+                {
+                    "stop": "plwsc",
+                    "travel_time": 1380
+                },
+                {
+                    "stop": "otreb",
+                    "travel_time": 1500
+                },
+                {
+                    "stop": "kanie",
+                    "travel_time": 1620
+                },
+                {
+                    "stop": "nwwar",
+                    "travel_time": 1740
+                },
+                {
+                    "stop": "komor",
+                    "travel_time": 1980
+                },
+                {
+                    "stop": "prusz",
+                    "travel_time": 2100
+                },
+                {
+                    "stop": "twork",
+                    "travel_time": 2220
+                },
+                {
+                    "stop": "malic",
+                    "travel_time": 2340
+                },
+                {
+                    "stop": "regul",
+                    "travel_time": 2460
+                },
+                {
+                    "stop": "micha",
+                    "travel_time": 2580
+                },
+                {
+                    "stop": "opacz",
+                    "travel_time": 2760
+                },
+                {
+                    "stop": "wsalo",
+                    "travel_time": 2880
+                },
+                {
+                    "stop": "wrako",
+                    "travel_time": 3000
+                },
+                {
+                    "stop": "walje",
+                    "travel_time": 3180
+                },
+                {
+                    "stop": "wreor",
+                    "travel_time": 3300
+                },
+                {
+                    "stop": "wzach",
+                    "travel_time": 3420
+                },
+                {
+                    "stop": "wocho",
+                    "travel_time": 3600
+                },
+                {
+                    "stop": "wsrod",
+                    "travel_time": 3720
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "C",
+                    "departure": 15720
+                },
+                {
+                    "calendar": "C",
+                    "departure": 17040
+                },
+                {
+                    "calendar": "C",
+                    "departure": 18360
+                },
+                {
+                    "calendar": "C",
+                    "departure": 20160
+                },
+                {
+                    "calendar": "C",
+                    "departure": 23760
+                },
+                {
+                    "calendar": "C",
+                    "departure": 27360
+                },
+                {
+                    "calendar": "C",
+                    "departure": 30960
+                },
+                {
+                    "calendar": "C",
+                    "departure": 34560
+                },
+                {
+                    "calendar": "C",
+                    "departure": 38160
+                },
+                {
+                    "calendar": "C",
+                    "departure": 41760
+                },
+                {
+                    "calendar": "C",
+                    "departure": 45360
+                },
+                {
+                    "calendar": "C",
+                    "departure": 48960
+                },
+                {
+                    "calendar": "C",
+                    "departure": 52560
+                },
+                {
+                    "calendar": "C",
+                    "departure": 56160
+                },
+                {
+                    "calendar": "C",
+                    "departure": 59760
+                },
+                {
+                    "calendar": "C",
+                    "departure": 63360
+                },
+                {
+                    "calendar": "C",
+                    "departure": 66960
+                },
+                {
+                    "calendar": "C",
+                    "departure": 70560
+                },
+                {
+                    "calendar": "C",
+                    "departure": 74160
+                },
+                {
+                    "calendar": "C",
+                    "departure": 77760
+                },
+                {
+                    "calendar": "C",
+                    "departure": 81360
+                },
+                {
+                    "calendar": "C",
+                    "departure": 86100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 13080
+                },
+                {
+                    "calendar": "D",
+                    "departure": 14400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 15720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 17040
+                },
+                {
+                    "calendar": "D",
+                    "departure": 18360
+                },
+                {
+                    "calendar": "D",
+                    "departure": 21840
+                },
+                {
+                    "calendar": "D",
+                    "departure": 23280
+                },
+                {
+                    "calendar": "D",
+                    "departure": 26640
+                },
+                {
+                    "calendar": "D",
+                    "departure": 27960
+                },
+                {
+                    "calendar": "D",
+                    "departure": 31260
+                },
+                {
+                    "calendar": "D",
+                    "departure": 59760
+                },
+                {
+                    "calendar": "D",
+                    "departure": 63360
+                },
+                {
+                    "calendar": "D",
+                    "departure": 66960
+                },
+                {
+                    "calendar": "D",
+                    "departure": 70560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 75420
+                },
+                {
+                    "calendar": "D",
+                    "departure": 80100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 86100
+                }
+            ]
+        },
+        {
+            "line": "ZA12",
+            "direction": 1,
+            "headsign": "Podkowa Leśna Główna",
+            "stops": [
+                {
+                    "stop": "milgr",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "poles",
+                    "travel_time": 120
+                },
+                {
+                    "stop": "plglo",
+                    "travel_time": 420
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "C",
+                    "departure": 18720
+                },
+                {
+                    "calendar": "C",
+                    "departure": 22620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 25320
+                },
+                {
+                    "calendar": "C",
+                    "departure": 28920
+                },
+                {
+                    "calendar": "C",
+                    "departure": 32520
+                },
+                {
+                    "calendar": "C",
+                    "departure": 36120
+                },
+                {
+                    "calendar": "C",
+                    "departure": 39720
+                },
+                {
+                    "calendar": "C",
+                    "departure": 43320
+                },
+                {
+                    "calendar": "C",
+                    "departure": 46920
+                },
+                {
+                    "calendar": "C",
+                    "departure": 50520
+                },
+                {
+                    "calendar": "C",
+                    "departure": 54120
+                },
+                {
+                    "calendar": "C",
+                    "departure": 57720
+                },
+                {
+                    "calendar": "C",
+                    "departure": 61320
+                },
+                {
+                    "calendar": "C",
+                    "departure": 64920
+                },
+                {
+                    "calendar": "C",
+                    "departure": 68520
+                },
+                {
+                    "calendar": "C",
+                    "departure": 72120
+                },
+                {
+                    "calendar": "C",
+                    "departure": 75720
+                },
+                {
+                    "calendar": "C",
+                    "departure": 79920
+                },
+                {
+                    "calendar": "C",
+                    "departure": 83520
+                },
+                {
+                    "calendar": "D",
+                    "departure": 17400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 19920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 22920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 25680
+                },
+                {
+                    "calendar": "D",
+                    "departure": 30000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 32880
+                },
+                {
+                    "calendar": "D",
+                    "departure": 36000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 39600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 43200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 46800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 50940
+                },
+                {
+                    "calendar": "D",
+                    "departure": 54540
+                },
+                {
+                    "calendar": "D",
+                    "departure": 58140
+                },
+                {
+                    "calendar": "D",
+                    "departure": 61020
+                },
+                {
+                    "calendar": "D",
+                    "departure": 64620
+                },
+                {
+                    "calendar": "D",
+                    "departure": 68220
+                },
+                {
+                    "calendar": "D",
+                    "departure": 68220
+                },
+                {
+                    "calendar": "D",
+                    "departure": 74820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 79200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 82800
+                }
+            ]
+        },
+        {
+            "line": "A1",
+            "direction": 1,
+            "headsign": "Warszawa Śródmieście WKD",
+            "stops": [
+                {
+                    "stop": "plglo",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "plwsc",
+                    "travel_time": 120
+                },
+                {
+                    "stop": "otreb",
+                    "travel_time": 240
+                },
+                {
+                    "stop": "kanie",
+                    "travel_time": 360
+                },
+                {
+                    "stop": "nwwar",
+                    "travel_time": 480
+                },
+                {
+                    "stop": "komor",
+                    "travel_time": 720
+                },
+                {
+                    "stop": "prusz",
+                    "travel_time": 840
+                },
+                {
+                    "stop": "twork",
+                    "travel_time": 960
+                },
+                {
+                    "stop": "malic",
+                    "travel_time": 1080
+                },
+                {
+                    "stop": "regul",
+                    "travel_time": 1200
+                },
+                {
+                    "stop": "micha",
+                    "travel_time": 1320
+                },
+                {
+                    "stop": "opacz",
+                    "travel_time": 1500
+                },
+                {
+                    "stop": "wsalo",
+                    "travel_time": 1620
+                },
+                {
+                    "stop": "wrako",
+                    "travel_time": 1740
+                },
+                {
+                    "stop": "walje",
+                    "travel_time": 1920
+                },
+                {
+                    "stop": "wreor",
+                    "travel_time": 2040
+                },
+                {
+                    "stop": "wzach",
+                    "travel_time": 2160
+                },
+                {
+                    "stop": "wocho",
+                    "travel_time": 2340
+                },
+                {
+                    "stop": "wsrod",
+                    "travel_time": 2460
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "C",
+                    "departure": 22620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 23820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 26220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 27420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 29820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 31020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 33420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 34620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 37020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 38220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 40620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 41820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 44220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 45420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 47820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 49020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 51420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 52620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 55020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 56220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 58620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 59820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 62220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 63420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 65820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 67020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 69420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 70620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 73020
+                },
+                {
+                    "calendar": "C",
+                    "departure": 74220
+                },
+                {
+                    "calendar": "C",
+                    "departure": 76620
+                },
+                {
+                    "calendar": "C",
+                    "departure": 77820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 80820
+                },
+                {
+                    "calendar": "C",
+                    "departure": 84420
+                },
+                {
+                    "calendar": "C",
+                    "departure": 86400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 20820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 22020
+                },
+                {
+                    "calendar": "D",
+                    "departure": 23820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 25260
+                },
+                {
+                    "calendar": "D",
+                    "departure": 25920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 26580
+                },
+                {
+                    "calendar": "D",
+                    "departure": 27240
+                },
+                {
+                    "calendar": "D",
+                    "departure": 28560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 30000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 30900
+                },
+                {
+                    "calendar": "D",
+                    "departure": 31800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 33120
+                },
+                {
+                    "calendar": "D",
+                    "departure": 33780
+                },
+                {
+                    "calendar": "D",
+                    "departure": 34440
+                },
+                {
+                    "calendar": "D",
+                    "departure": 35100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 36000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 36900
+                },
+                {
+                    "calendar": "D",
+                    "departure": 37800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 38700
+                },
+                {
+                    "calendar": "D",
+                    "departure": 39600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 40500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 41400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 42300
+                },
+                {
+                    "calendar": "D",
+                    "departure": 43200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 44100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 45000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 45900
+                },
+                {
+                    "calendar": "D",
+                    "departure": 46800
+                },
+                {
+                    "calendar": "D",
+                    "departure": 47700
+                },
+                {
+                    "calendar": "D",
+                    "departure": 48600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 49500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 50400
+                },
+                {
+                    "calendar": "D",
+                    "departure": 51120
+                },
+                {
+                    "calendar": "D",
+                    "departure": 51840
+                },
+                {
+                    "calendar": "D",
+                    "departure": 52560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 53280
+                },
+                {
+                    "calendar": "D",
+                    "departure": 54000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 54720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 55440
+                },
+                {
+                    "calendar": "D",
+                    "departure": 56160
+                },
+                {
+                    "calendar": "D",
+                    "departure": 56880
+                },
+                {
+                    "calendar": "D",
+                    "departure": 57600
+                },
+                {
+                    "calendar": "D",
+                    "departure": 58320
+                },
+                {
+                    "calendar": "D",
+                    "departure": 59040
+                },
+                {
+                    "calendar": "D",
+                    "departure": 59760
+                },
+                {
+                    "calendar": "D",
+                    "departure": 60420
+                },
+                {
+                    "calendar": "D",
+                    "departure": 61920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 62640
+                },
+                {
+                    "calendar": "D",
+                    "departure": 63360
+                },
+                {
+                    "calendar": "D",
+                    "departure": 64020
+                },
+                {
+                    "calendar": "D",
+                    "departure": 65520
+                },
+                {
+                    "calendar": "D",
+                    "departure": 66240
+                },
+                {
+                    "calendar": "D",
+                    "departure": 66960
+                },
+                {
+                    "calendar": "D",
+                    "departure": 67620
+                },
+                {
+                    "calendar": "D",
+                    "departure": 69120
+                },
+                {
+                    "calendar": "D",
+                    "departure": 69840
+                },
+                {
+                    "calendar": "D",
+                    "departure": 70560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 72420
+                },
+                {
+                    "calendar": "D",
+                    "departure": 73020
+                },
+                {
+                    "calendar": "D",
+                    "departure": 73920
+                },
+                {
+                    "calendar": "D",
+                    "departure": 74820
+                },
+                {
+                    "calendar": "D",
+                    "departure": 75720
+                },
+                {
+                    "calendar": "D",
+                    "departure": 78000
+                },
+                {
+                    "calendar": "D",
+                    "departure": 79200
+                },
+                {
+                    "calendar": "D",
+                    "departure": 80100
+                },
+                {
+                    "calendar": "D",
+                    "departure": 83700
+                },
+                {
+                    "calendar": "D",
+                    "departure": 85500
+                },
+                {
+                    "calendar": "D",
+                    "departure": 86400
+                }
+            ]
+        },
+        {
+            "line": "ZA1",
+            "direction": 1,
+            "headsign": "Podkowa Leśna Główna",
+            "stops": [
+                {
+                    "stop": "gmrad",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "gmjor",
+                    "travel_time": 420
+                },
+                {
+                    "stop": "gmpia",
+                    "travel_time": 660
+                },
+                {
+                    "stop": "gmokr",
+                    "travel_time": 780
+                },
+                {
+                    "stop": "brzoz",
+                    "travel_time": 1320
+                },
+                {
+                    "stop": "kazim",
+                    "travel_time": 1440
+                },
+                {
+                    "stop": "plzac",
+                    "travel_time": 1620
+                },
+                {
+                    "stop": "plglo",
+                    "travel_time": 2100
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "D",
+                    "departure": 32580
+                },
+                {
+                    "calendar": "D",
+                    "departure": 36180
+                },
+                {
+                    "calendar": "D",
+                    "departure": 39780
+                },
+                {
+                    "calendar": "D",
+                    "departure": 43380
+                },
+                {
+                    "calendar": "D",
+                    "departure": 46980
+                },
+                {
+                    "calendar": "D",
+                    "departure": 50700
+                },
+                {
+                    "calendar": "D",
+                    "departure": 54300
+                }
+            ]
+        },
+        {
+            "line": "ZA1",
+            "direction": 0,
+            "headsign": "Grodzisk Mazowiecki Radońska",
+            "stops": [
+                {
+                    "stop": "plglo",
+                    "travel_time": 0
+                },
+                {
+                    "stop": "plzac",
+                    "travel_time": 480
+                },
+                {
+                    "stop": "kazim",
+                    "travel_time": 660
+                },
+                {
+                    "stop": "brzoz",
+                    "travel_time": 780
+                },
+                {
+                    "stop": "gmokr",
+                    "travel_time": 1380
+                },
+                {
+                    "stop": "gmpia",
+                    "travel_time": 1500
+                },
+                {
+                    "stop": "gmjor",
+                    "travel_time": 1800
+                },
+                {
+                    "stop": "gmrad",
+                    "travel_time": 2160
+                }
+            ],
+            "trips": [
+                {
+                    "calendar": "D",
+                    "departure": 32760
+                },
+                {
+                    "calendar": "D",
+                    "departure": 36360
+                },
+                {
+                    "calendar": "D",
+                    "departure": 39960
+                },
+                {
+                    "calendar": "D",
+                    "departure": 43560
+                },
+                {
+                    "calendar": "D",
+                    "departure": 47160
+                },
+                {
+                    "calendar": "D",
+                    "departure": 50760
+                },
+                {
+                    "calendar": "D",
+                    "departure": 54360
+                }
+            ]
+        }
+    ]
+}
