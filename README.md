@@ -18,6 +18,7 @@ pip install -Ur requirements.dev.txt  # Install project dependencies
 cd szallitas
 ./manage.py migrate
 ./manage.py createsuperuser
+./manage.py load_sample_data
 ./manage.py runserver 8888
 ```
 
