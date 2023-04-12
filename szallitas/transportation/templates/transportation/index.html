@@ -8,18 +8,6 @@
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
     type="text/css" />
-
-<style>
-    .ui-autocomplete {
-        max-height: 200px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding-right: 20px;
-    }
-    * html .ui-autocomplete {
-        height: 200px;
-    }
-</style>
 {% endblock %}
 {% block title %}Szallitas - Home{% endblock %}
 {% block content %}
@@ -60,7 +48,10 @@
                 var lines = availableLines.map(tuple => tuple[0]);
                 var availableItems = stops.concat(lines);
                 $("#items").autocomplete({
-                    source: availableItems,
+                    source: function (request, response) {
+                        var results = $.ui.autocomplete.filter(availableItems, request.term);
+                        response(results.slice(0, 10));
+                    },
                     select: function (event, item) {
                         var line_id = availableLines.find(tuple => tuple[0] === item.item.value)?.[1];
                         if (line_id) {
