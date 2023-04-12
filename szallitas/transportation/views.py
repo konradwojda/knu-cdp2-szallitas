@@ -3,14 +3,16 @@ from django.shortcuts import render
 
 from .models.agency import Agency
 from .models.line import Line
+from .models.stop import Stop
 
 
 def index(request: HttpRequest) -> HttpResponse:
     agency = Agency(name="Metro Warszawskie", website="metro.waw.pl")
-    line1 = Line(code="M1", line_type=1, agency=agency)
-    line2 = Line(code="M2", line_type=1, agency=agency)
+    line1 = Line(id=1, code="M1", line_type=1, agency=agency)
+    line2 = Line(id=2, code="M2", line_type=1, agency=agency)
+    stop1 = Stop(id=1, name="Stop1", lat=0, lon=0, wheelchair_accessible=0)
     # TODO: provide Line.objects.all()
-    context = {"lines": [line1, line2]}
+    context = {"lines": [line1, line2], "stops": [stop1]}
     return render(request, "transportation/index.html", context)
 
 
