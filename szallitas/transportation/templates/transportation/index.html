@@ -8,7 +8,19 @@
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
     type="text/css" />
-    {% endblock %}
+
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 20px;
+    }
+    * html .ui-autocomplete {
+        height: 200px;
+    }
+</style>
+{% endblock %}
 {% block title %}Szallitas - Home{% endblock %}
 {% block content %}
 {% load transportation_extras %}
@@ -42,25 +54,25 @@
     }
 
     load().then(
-        function([availableLines, availableStops]) {
+        function ([availableLines, availableStops]) {
             $(function () {
-            var stops = availableStops.map(tuple => tuple[0]);
-            var lines = availableLines.map(tuple => tuple[0]);
-            var availableItems = stops.concat(lines);
-            $("#items").autocomplete({
-                source: availableItems,
-                select: function(event, item) {
-                    var line_id = availableLines.find(tuple => tuple[0] === item.item.value)?.[1];
-                    if(line_id){
-                        window.location.href = "line/" + line_id;
+                var stops = availableStops.map(tuple => tuple[0]);
+                var lines = availableLines.map(tuple => tuple[0]);
+                var availableItems = stops.concat(lines);
+                $("#items").autocomplete({
+                    source: availableItems,
+                    select: function (event, item) {
+                        var line_id = availableLines.find(tuple => tuple[0] === item.item.value)?.[1];
+                        if (line_id) {
+                            window.location.href = "line/" + line_id;
+                        }
+                        var stop_id = availableStops.find(tuple => tuple[0] === item.item.value)?.[1];
+                        if (stop_id) {
+                            window.location = "stop/" + stop_id;
+                        }
                     }
-                    var stop_id = availableStops.find(tuple => tuple[0] === item.item.value)?.[1];
-                    if(stop_id) {
-                        window.location = "stop/" + stop_id;
-                    }
-                }
+                });
             });
-        } );
         }
     )
 
