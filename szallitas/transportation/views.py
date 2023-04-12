@@ -6,8 +6,7 @@ from .models.stop import Stop
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    context = {}
-    return render(request, "transportation/index.html", context)
+    return render(request, "transportation/index.html")
 
 
 def line(request: HttpRequest, line_id: int) -> HttpResponse:
