@@ -8,5 +8,5 @@ urlpatterns = [
     path("stop/<int:stop_id>/", views.stop, name="stop"),
     path("timetable/<int:line_id>/<int:stop_id>/", views.timetable, name="line_at_stop"),
     path("api/stops", views.stops, name="stops"),
-    path("api/lines", views.lines, name="lines")
+    path("api/lines", views.lines, name="lines"),
 ]
