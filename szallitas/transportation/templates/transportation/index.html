@@ -2,18 +2,58 @@
 {% block title %}Szallitas - Home{% endblock %}
 {% block content %}
 {% load transportation_extras %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">
+</script>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
+    type="text/css" />
+
 <div>
-<h3>Search for lines and stops</h3>
-<input type="text" style="width: 100%;">Search</input>
+    <h3>Search for lines and stops</h3>
+    <input type="text" style="width: 100%;" id="items">Search</input>
+    <script>
+        $(function () {
+            var availableLines = [
+                {% for line in lines %}
+                ["{{line.code}}","{{line.id}}"],
+            {% endfor %}
+            ];
+        var availableStops = [
+            {% for stop in stops %}
+        ["{{stop.name}}", "{{stop.id}}"]
+        {% endfor %}
+            ];
+        var stops = availableStops.map(tuple => tuple[0]);
+        var lines = availableLines.map(tuple => tuple[0]);
+        var availableItems = stops.concat(lines);
+        $("#items").autocomplete({
+            source: availableItems,
+            select: function(event, item) {
+                var line_id = availableLines.find(tuple => tuple[0] === item.item.value)?.[1];
+                if(line_id){
+                    window.location.href = "/line/" + line_id;
+                }
+                var stop_id = availableStops.find(tuple => tuple[0] === item.item.value)?.[1];
+                if(stop_id) {
+                    window.location = "/stop/" + stop_id;
+                }
+            }
+        });
+    } );
+    </script>
 </div>
 <div>
-<h3>Select a stop</h3>
-<div id="map">Map here</div>
+    <h3>Select a stop</h3>
+    <div id="map">Map here</div>
 </div>
 <h3>Select a line</h3>
 <ul class="route-list-container">
     {% for line in lines %}
-        <li><a href="/line/{{line.id}}">{{line.line_type|line_emoji}}{{line.code}}</a></li>
+    <li><a href="/line/{{line.id}}">{{line.line_type|line_emoji}}{{line.code}}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
