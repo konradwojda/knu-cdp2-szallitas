@@ -190,3 +190,36 @@ a:hover {
     margin: 1rem 0;
     clear: both;
 }
+
+/****************
+ * MAIN CONTENT *
+ ****************/
+
+.map {
+    height: 32em;
+}
+
+.search-input {
+    height: 2em;
+    width: 100%;
+}
+
+.ui-autocomplete {
+    position: absolute;
+    z-index: 9999 !important;
+}
+
+.route-list {
+    display: flex;
+    flex-flow: row wrap;
+    gap: .6em;
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.route-list li {
+    width: auto;
+    flex: auto;
+    flex-grow: 0;
+    display: block;
+}

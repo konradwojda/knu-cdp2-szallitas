@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#003377">
     <title>{% block title %}Szallitas{% endblock %}</title>
+    {% block headinsert %}{% endblock %}
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
@@ -21,5 +22,6 @@
         {% block content %}{% endblock %}
     </main>
 </body>
+{% block scriptinsert %}{% endblock %}
 
 </html>
