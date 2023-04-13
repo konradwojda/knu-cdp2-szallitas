@@ -57,16 +57,24 @@
     async function load() {
         const lines_response = await fetch("api/lines");
         const lines = await lines_response.json();
-        const availableLines = lines.map(line => [line.code, line.id]);
 
         const stops_response = await fetch("api/stops");
         const stops = await stops_response.json();
-        const availableStops = stops.map(stop => [stop.name, stop.id]);
-        return [availableLines, availableStops];
+        return [lines, stops];
     }
 
+    const map = L.map("map");
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Tiles &copy; <a href="https://wiki.osmfoundation.org/wiki/Terms_of_Use">OpenStreetMap Foundation</a>',
+        maxZoom: 18
+    }).addTo(map);
+    const markers = L.markerClusterGroup().addTo(map);
+
     load().then(
-        function ([availableLines, availableStops]) {
+        function ([lines, stops]) {
+
+            const availableLines = lines.map(line => [line.code, line.id]);
+            const availableStops = stops.map(stop => [stop.name, stop.id]);
             $(function () {
                 var stops = availableStops.map(tuple => tuple[0]);
                 var lines = availableLines.map(tuple => tuple[0]);
@@ -88,37 +96,30 @@
                     }
                 });
             });
+            stops.forEach(stop => {
+                let lat = stop.lat;
+                let lon = stop.lon;
+                if (isNaN(lat) || isNaN(lon)) return;
+
+                const popup = document.createElement("span");
+                const boldTitle = document.createElement("b");
+                boldTitle.append(`${stop.name}`);
+                popup.append(boldTitle, document.createElement("br"));
+
+                const redirect_anchor = document.createElement("a");
+                redirect_anchor.href = `stop/${encodeURIComponent(stop.id)}`;
+                redirect_anchor.append("Departures");
+                const center = document.createElement("center");
+                center.append(redirect_anchor);
+                popup.append(center, document.createElement("br"));
+
+
+                const marker = L.marker([lat, lon]);
+                marker.bindPopup(popup);
+                marker.addTo(markers);
+            })
+            map.fitBounds(markers.getBounds())
         }
     )
-
-    const map = L.map("map");
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Tiles &copy; <a href="https://wiki.osmfoundation.org/wiki/Terms_of_Use">OpenStreetMap Foundation</a>',
-        maxZoom: 18
-    }).addTo(map);
-    const markers = L.markerClusterGroup().addTo(map);
-
-    fetch("api/stops").then(response => response.json()).then(stops => stops.forEach(stop => {
-        let lat = stop.lat;
-        let lon = stop.lon;
-        if (isNaN(lat) || isNaN(lon)) return;
-
-        const popup = document.createElement("span");
-        const boldTitle = document.createElement("b");
-        boldTitle.append(`${stop.name}`);
-        popup.append(boldTitle, document.createElement("br"));
-
-        const redirect_anchor = document.createElement("a");
-        redirect_anchor.href = `stop/${encodeURIComponent(stop.id)}`;
-        redirect_anchor.append("Departures");
-        const center = document.createElement("center");
-        center.append(redirect_anchor);
-        popup.append(center, document.createElement("br"));
-
-
-        const marker = L.marker([lat, lon]);
-        marker.bindPopup(popup);
-        marker.addTo(markers);
-    })).then(() => map.fitBounds(markers.getBounds()));
 </script>
 {% endblock %}
