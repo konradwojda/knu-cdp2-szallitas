@@ -11,14 +11,6 @@
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
     type="text/css" />
 
-<style>
-    .ui-autocomplete {
-        position: absolute;
-        z-index: 99999 !important;
-    }
-
-</style>
-
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
     integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
@@ -44,18 +36,20 @@
 {% load transportation_extras %}
 <div>
     <h3>Search for lines and stops</h3>
-    <input type="text" style="width: 100%;" id="items">Search</input>
+    <input type="text" class="search-input" id="items"></input>
 </div>
 <div id="stops">
     <h3 id="stops">Select a stop</h3>
-    <div id="map" style="height: 500px;"></div>
+    <div id="map" class="map"></div>
 </div>
-<h3 id="lines">Select a line</h3>
-<ul class="route-list-container">
-    {% for line in lines %}
-    <li><a href="line/{{line.id}}">{{line.line_type|line_emoji}}{{line.code}}</a></li>
-    {% endfor %}
-</ul>
+<div id="lines">
+    <h3>Select a line</h3>
+    <ul class="route-list">
+        {% for line in lines %}
+        <li><a href="line/{{line.id}}">{{line.line_type|line_emoji}} {{line.code}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
 
 {% block scriptinsert %}
