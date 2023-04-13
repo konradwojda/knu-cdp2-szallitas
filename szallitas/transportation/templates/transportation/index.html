@@ -47,10 +47,10 @@
     <input type="text" style="width: 100%;" id="items">Search</input>
 </div>
 <div>
-    <h3>Select a stop</h3>
+    <h3 id="stops">Select a stop</h3>
     <div id="map" style="height: 500px;"></div>
 </div>
-<h3>Select a line</h3>
+<h3 id="lines">Select a line</h3>
 <ul class="route-list-container">
     {% for line in lines %}
     <li><a href="line/{{line.id}}">{{line.line_type|line_emoji}}{{line.code}}</a></li>
