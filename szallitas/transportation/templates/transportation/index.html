@@ -117,7 +117,9 @@
         const redirect_anchor = document.createElement("a");
         redirect_anchor.href = `stop/${encodeURIComponent(stop.id)}`;
         redirect_anchor.append("Departures");
-        popup.append(redirect_anchor, document.createElement("br"));
+        const center = document.createElement("center");
+        center.append(redirect_anchor);
+        popup.append(center, document.createElement("br"));
 
 
         const marker = L.marker([lat, lon]);
