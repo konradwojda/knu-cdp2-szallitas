@@ -1,1 +1,49 @@
-{{stop_id}}
+
+{% extends "transportation/base.html" %}
+{% block headinsert %}
+<!-- leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+ <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+{% endblock %}
+
+{% load transportation_extras %}
+{% block title %}Szallitas - Stop{% endblock %}
+{% block content %}
+
+<section class="lines_in_stop">
+	<div class="selected_stop">
+		<h3>Stop {{stop_id}}. Select a line</h3>
+		<ul class="available_lines">
+			{% for line in lines %}
+				<li><a href="{% url 'line_at_stop' line.id stop_id %}">{{line.line_type|line_emoji}} {{line.code}}</a></li>
+			{% endfor %}
+		</ul>
+
+	</div>
+
+	<div class="stop_map" id="stop_map"></div>
+
+</section>
+
+
+
+
+{% endblock %}
+
+{% block scriptinsert %}
+<script>
+	//TODO: change the hardcoded latitude and longitude
+	var map = L.map('stop_map').setView([52.225420, 20.989605], 13);
+
+	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 25,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+
+	//TODO: change the hardcoded latitude and longitude
+    var marker = L.marker([52.225420, 20.989605]).addTo(map);
+</script>
+{% endblock %}
