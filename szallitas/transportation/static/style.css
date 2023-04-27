@@ -223,3 +223,33 @@ a:hover {
     flex-grow: 0;
     display: block;
 }
+
+/****************
+ * STOPS TEMPLATE *
+ ****************/
+
+.available_lines{
+    list-style-type: none;
+    padding-bottom: 2em;
+}
+
+.available_lines li{
+    padding-bottom: 1.2em;
+}
+
+.available_lines li a{
+    text-decoration: none;
+}
+
+.lines_in_stop{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 4em;
+    padding-left: 5em;
+    padding-right: 5em;
+
+}
+.stop_map{
+    height: 22em;
+    width: 35em;
+}
