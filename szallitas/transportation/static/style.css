@@ -223,3 +223,12 @@ a:hover {
     flex-grow: 0;
     display: block;
 }
+
+/**************
+ * TIMETABLES *
+ **************/
+
+.timetables table {
+    display: inline-block;
+    width: fit-content;
+}

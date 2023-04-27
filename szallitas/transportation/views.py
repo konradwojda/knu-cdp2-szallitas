@@ -1,8 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_list_or_404, get_object_or_404, render
 
-from .models.line import Line
-from .models.stop import Stop
+from .models import Line, Pattern, Stop
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -21,7 +20,11 @@ def stop(request: HttpRequest, stop_id: int) -> HttpResponse:
 
 
 def timetable(request: HttpRequest, line_id: int, stop_id: int) -> HttpResponse:
-    context = {"stop_id": stop_id, "line_id": line_id}
+    line = get_object_or_404(Line, pk=line_id)
+    stop = get_object_or_404(Stop, pk=stop_id)
+    patterns = get_list_or_404(Pattern, line__id=line_id)
+
+    context = {"line": line, "stop": stop, "patterns": patterns}
     return render(request, "transportation/timetable.html", context)
 
 

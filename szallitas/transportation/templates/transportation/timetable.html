@@ -1,1 +1,83 @@
-{{line_id}}, {{stop_id}}
+{% extends "transportation/base.html" %}
+{% block title %}Szallitas - {{line.code}} at {{stop.name}}{% endblock %}
+{% block content %}
+{% load transportation_extras %}
+<div>
+    <h3>Line
+        <a href="/transportation/line/{{line.id}}">{{line.line_type|line_emoji}} {{line.code}}</a>
+        at stop
+        <a href="/transportation/stop/{{stop.id}}">{{stop.name}}</a>
+    </h3>
+    {% for pattern in patterns %}
+    <div>
+        <!-- FIXME: What if pattern doesn't have a headsign? -->
+        <h4>for {{pattern.headsign}}</h4>
+        <div class="timetables">
+            <table>
+                <tr>
+                    <th colspan="2">Weekdays</th>
+                </tr>
+                <tr>
+                    <th>Hour</th>
+                    <th>Minutes</th>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>10 20 40</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>00 30</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>00 30</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th colspan="2">Saturdays</th>
+                </tr>
+                <tr>
+                    <th>Hour</th>
+                    <th>Minutes</th>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>00 40</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>00 40</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th colspan="2">Sundays & Holidays</th>
+                </tr>
+                <tr>
+                    <th>Hour</th>
+                    <th>Minutes</th>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>10</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
