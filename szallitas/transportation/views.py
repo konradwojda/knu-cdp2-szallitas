@@ -16,7 +16,7 @@ def line(request: HttpRequest, line_id: int) -> HttpResponse:
 
 
 def stop(request: HttpRequest, stop_id: int) -> HttpResponse:
-    context = {"stop_id": stop_id}
+    context = {"stop_id": stop_id, "lines": Line.objects.all()}
     return render(request, "transportation/stop.html", context)
 
 
