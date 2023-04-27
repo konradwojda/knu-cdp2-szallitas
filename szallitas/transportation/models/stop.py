@@ -25,4 +25,4 @@ class Stop(models.Model):
     id: int
     pk: int
     pattern_set: "Manager[Pattern]"
-    patternstop_set: "Manager[PatternStop]"
+    pattern_stop_set: "Manager[PatternStop]"
