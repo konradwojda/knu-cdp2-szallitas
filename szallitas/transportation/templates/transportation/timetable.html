@@ -8,74 +8,28 @@
         at stop
         <a href="/transportation/stop/{{stop.id}}">{{stop.name}}</a>
     </h3>
-    {% for pattern in patterns %}
+    {% for pattern, timetables in timetable_by_pattern %}
     <div>
         <!-- FIXME: What if pattern doesn't have a headsign? -->
         <h4>for {{pattern.headsign}}</h4>
         <div class="timetables">
+            {% for calendar_name, deps_by_hours in timetables %}
             <table>
                 <tr>
-                    <th colspan="2">Weekdays</th>
+                    <th colspan="2">{{calendar_name}}</th>
                 </tr>
                 <tr>
                     <th>Hour</th>
                     <th>Minutes</th>
                 </tr>
+                {% for hour, minutes in deps_by_hours %}
                 <tr>
-                    <td>8</td>
-                    <td>10 20 40</td>
+                    <td>{{hour}}</td>
+                    <td>{{minutes|join:" "}}</td>
                 </tr>
-                <tr>
-                    <td>9</td>
-                    <td>00 30</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>00 30</td>
-                </tr>
+                {% endfor %}
             </table>
-            <table>
-                <tr>
-                    <th colspan="2">Saturdays</th>
-                </tr>
-                <tr>
-                    <th>Hour</th>
-                    <th>Minutes</th>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>00 40</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>20</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>00 40</td>
-                </tr>
-            </table>
-            <table>
-                <tr>
-                    <th colspan="2">Sundays & Holidays</th>
-                </tr>
-                <tr>
-                    <th>Hour</th>
-                    <th>Minutes</th>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>10</td>
-                </tr>
-            </table>
+            {% endfor %}
         </div>
     </div>
     {% endfor %}
