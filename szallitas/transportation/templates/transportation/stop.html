@@ -16,7 +16,7 @@
 
 <section class="lines_in_stop">
 	<div class="selected_stop">
-		<h3>Stop {{stop_id}}. Select a line</h3>
+		<h3>Stop {{stop_object.name}}. Select a line</h3>
 		<ul class="available_lines">
 			{% for line in lines %}
 				<li><a href="{% url 'line_at_stop' line.id stop_id %}">{{line.line_type|line_emoji}} {{line.code}}</a></li>
