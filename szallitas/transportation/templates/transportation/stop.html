@@ -37,13 +37,13 @@
 {% block scriptinsert %}
 <script>
 	//TODO: change the hardcoded latitude and longitude
-	var map = L.map('stop_map').setView([52.225420, 20.989605], 13);
+	var map = L.map('stop_map').setView([{{stop_object.lat}}, {{stop_object.lon}}], 13);
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 25,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 
 	//TODO: change the hardcoded latitude and longitude
-    var marker = L.marker([52.225420, 20.989605]).addTo(map);
+    var marker = L.marker([{{stop_object.lat}}, {{stop_object.lon}}]).addTo(map);
 </script>
 {% endblock %}
