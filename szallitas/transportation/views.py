@@ -1,7 +1,7 @@
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models import Line, Stop
+from .models import Line, Pattern, PatternStop, Stop
 from .timetable.tabular import generate_tabular_timetable
 
 
@@ -11,7 +11,29 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def line(request: HttpRequest, line_id: int) -> HttpResponse:
-    context = {"line_id": line_id}
+    pattern = Pattern.objects.filter(line__id=line_id).first()
+    if not pattern:
+        raise Http404("Pattern does not exist for line {}".format(line_id))
+
+    inbound_stops = PatternStop.objects.filter(
+        pattern__line_id=line_id, pattern__direction=Pattern.Direction.INBOUND
+    ).order_by("index")
+    if not inbound_stops:
+        raise Http404("No inbound stops exist for line {}".format(line_id))
+
+    outbound_stops = PatternStop.objects.filter(
+        pattern__line_id=line_id, pattern__direction=Pattern.Direction.OUTBOUND
+    ).order_by("index")
+    if not outbound_stops:
+        raise Http404("No outbound stops exist for line {}".format(line_id))
+
+    context = {
+        "line_id": line_id,
+        "line": Line.objects.get(pk=line_id),
+        "pattern": pattern,
+        "inbound_stops": inbound_stops,
+        "outbound_stops": outbound_stops,
+    }
     return render(request, "transportation/line.html", context)
 
 

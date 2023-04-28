@@ -1,1 +1,62 @@
-{{line_id}}
+{% load transportation_extras %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#003377">
+    <title>{% block title %}Szallitas{% endblock %}</title>
+    {% block headinsert %}{% endblock %}
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .table-container {
+            display: flex;
+        }
+
+        table {
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="nav-bar">
+        <nav class="nav">
+            <span class="nav-logo"><a href="/transportation/">SZALLITAS</a></span>
+            <a class="nav-logo">Line {{line_id}}{{line.line_type|line_emoji}} {{line.code}}</a>
+            <a href="/transportation/#stops" class="nav-link">Lines&#x1F447</a>
+            <a href="/transportation/#lines" class="nav-link">Stops&#x1F447</a>
+        </nav>
+    </header>
+    <main class="content">
+        <h1>Line {{line.line_type|line_emoji}} {{line_id}}. Select a stop</h1>
+
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Inbound</th>
+                </tr>
+                {% for inbound_stop in inbound_stops %}
+                <tr>
+                    <td>{{ forloop.counter0|add:1 }}. {{ inbound_stop.stop.name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <table>
+                <tr>
+                    <th>Outbound</th>
+                </tr>
+                {% for outbound_stop in outbound_stops %}
+                <tr>
+                    <td>{{ forloop.counter0|add:1 }}. {{ outbound_stop.stop.name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </main>
+</body>
+{% block scriptinsert %}{% endblock %}
+
+</html>
