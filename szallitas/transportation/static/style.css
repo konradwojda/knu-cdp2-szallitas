@@ -253,3 +253,15 @@ a:hover {
     height: 22em;
     width: 35em;
 }
+
+@media screen and (max-width: 52.124rem) {
+    .lines_in_stop{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .stop_map{
+        width: 45em;
+    }
+}
