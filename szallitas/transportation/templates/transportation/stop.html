@@ -36,14 +36,12 @@
 
 {% block scriptinsert %}
 <script>
-	//TODO: change the hardcoded latitude and longitude
 	var map = L.map('stop_map').setView([{{stop_object.lat}}, {{stop_object.lon}}], 13);
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 25,
+    maxZoom: 35,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 
-	//TODO: change the hardcoded latitude and longitude
     var marker = L.marker([{{stop_object.lat}}, {{stop_object.lon}}]).addTo(map);
 </script>
 {% endblock %}
