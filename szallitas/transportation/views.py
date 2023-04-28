@@ -1,7 +1,5 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
-
+from django.shortcuts import get_object_or_404, render
 
 from .models.line import Line
 from .models.stop import Stop
