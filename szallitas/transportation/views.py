@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 from .models.line import Line
 from .models.stop import Stop
@@ -16,7 +17,9 @@ def line(request: HttpRequest, line_id: int) -> HttpResponse:
 
 
 def stop(request: HttpRequest, stop_id: int) -> HttpResponse:
-    context = {"stop_id": stop_id, "lines": Line.objects.all()}
+    stop_object = get_object_or_404(Stop, id=stop_id)
+
+    context = {"stop_id": stop_id, "lines": Line.objects.all(), "stop_object": stop_object}
     return render(request, "transportation/stop.html", context)
 
 
