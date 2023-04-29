@@ -1,13 +1,10 @@
-
 {% extends "transportation/base.html" %}
 {% block headinsert %}
 <!-- leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-     crossorigin=""/>
- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-     crossorigin=""></script>
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 {% endblock %}
 
 {% load transportation_extras %}
@@ -15,17 +12,18 @@
 {% block content %}
 
 <section class="lines_in_stop">
-	<div class="selected_stop">
-		<h3>Stop {{stop_object.name}}. Select a line</h3>
-		<ul class="available_lines">
-			{% for line in lines %}
-				<li><a href="{% url 'line_at_stop' line.id stop_object.id %}">{{line.line_type|line_emoji}} {{line.code}}</a></li>
-			{% endfor %}
-		</ul>
+    <div class="selected_stop">
+        <h3>Stop {{stop_object.name}}. Select a line:</h3>
+        <ul class="available_lines">
+            {% for line in lines %}
+            <li><a href="{% url 'line_at_stop' line.id stop_object.id %}">{{line.line_type|line_emoji}}
+                    {{line.code}}</a></li>
+            {% endfor %}
+        </ul>
 
-	</div>
+    </div>
 
-	<div class="stop_map" id="stop_map"></div>
+    <div class="stop_map" id="stop_map"></div>
 
 </section>
 
@@ -36,12 +34,13 @@
 
 {% block scriptinsert %}
 <script>
-	var map = L.map('stop_map').setView([{{stop_object.lat}}, {{stop_object.lon}}], 13);
+    var map = L.map('stop_map').setView([{{ stop_object.lat }}, { { stop_object.lon } }], 13);
 
-	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 35,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 35,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
-    var marker = L.marker([{{stop_object.lat}}, {{stop_object.lon}}]).addTo(map);
+    var marker = L.marker([{{ stop_object.lat }}, { { stop_object.lon } }]).addTo(map);
 </script>
 {% endblock %}
