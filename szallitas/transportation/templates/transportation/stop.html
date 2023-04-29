@@ -13,10 +13,10 @@
 
 <section class="lines_in_stop">
     <div class="selected_stop">
-        <h3>Stop {{stop_object.name}}. Select a line:</h3>
+        <h3>Stop {{stop.name}}. Select a line:</h3>
         <ul class="available_lines">
             {% for line in lines %}
-            <li><a href="{% url 'line_at_stop' line.id stop_object.id %}">{{line.line_type|line_emoji}}
+            <li><a href="{% url 'line_at_stop' line.id stop.id %}">{{line.line_type|line_emoji}}
                     {{line.code}}</a></li>
             {% endfor %}
         </ul>
@@ -34,13 +34,13 @@
 
 {% block scriptinsert %}
 <script>
-    var map = L.map('stop_map').setView([{{ stop_object.lat }}, { { stop_object.lon } }], 13);
+    var map = L.map('stop_map').setView([{{ stop.lat }}, {{ stop.lon }}], 13);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 35,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    var marker = L.marker([{{ stop_object.lat }}, { { stop_object.lon } }]).addTo(map);
+    var marker = L.marker([{{ stop.lat }}, {{ stop.lon }}]).addTo(map);
 </script>
 {% endblock %}
