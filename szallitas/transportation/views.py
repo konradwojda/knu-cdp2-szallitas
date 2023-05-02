@@ -18,7 +18,7 @@ def line(request: HttpRequest, line_id: int) -> HttpResponse:
 def stop(request: HttpRequest, stop_id: int) -> HttpResponse:
     stop = get_object_or_404(Stop, id=stop_id)
 
-    context = {"lines": Line.objects.filter(pattern__stops__id=1).distinct(), "stop": stop}
+    context = {"lines": Line.objects.filter(pattern__stops__id=stop_id).distinct(), "stop": stop}
     return render(request, "transportation/stop.html", context)
 
 
