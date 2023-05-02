@@ -1,8 +1,8 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models.line import Line
-from .models.stop import Stop
+from .models import Line, Stop
+from .timetable.tabular import generate_tabular_timetable
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -23,7 +23,17 @@ def stop(request: HttpRequest, stop_id: int) -> HttpResponse:
 
 
 def timetable(request: HttpRequest, line_id: int, stop_id: int) -> HttpResponse:
-    context = {"stop_id": stop_id, "line_id": line_id}
+    # FIXME: What if pattern stops multiple times at the stop?
+    line = get_object_or_404(Line, pk=line_id)
+    stop = get_object_or_404(Stop, pk=stop_id)
+    timetable_by_pattern = [
+        (pattern, generate_tabular_timetable(pattern_stop))
+        for pattern in line.pattern_set.all()
+        # Skip patterns not stopping at the requested stop
+        if (pattern_stop := pattern.pattern_stop_set.filter(stop_id=stop_id).first())
+    ]
+
+    context = {"line": line, "stop": stop, "timetable_by_pattern": timetable_by_pattern}
     return render(request, "transportation/timetable.html", context)
 
 

@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 from pathlib import Path
 
+from django.db.models import ManyToManyField
+
+# Monkey-patch type hint support for some Django objects
+for cls in [ManyToManyField]:
+    cls.__class_getitem__ = classmethod(lambda cls, *args, **kwargs: cls)  # type: ignore
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

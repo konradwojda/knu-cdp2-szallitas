@@ -1,1 +1,37 @@
-{{line_id}}, {{stop_id}}
+{% extends "transportation/base.html" %}
+{% block title %}Szallitas - {{line.code}} at {{stop.name}}{% endblock %}
+{% block content %}
+{% load transportation_extras %}
+<div>
+    <h3>Line
+        <a href="/transportation/line/{{line.id}}">{{line.line_type|line_emoji}} {{line.code}}</a>
+        at stop
+        <a href="/transportation/stop/{{stop.id}}">{{stop.name}}</a>
+    </h3>
+    {% for pattern, timetables in timetable_by_pattern %}
+    <div>
+        <!-- FIXME: What if pattern doesn't have a headsign? -->
+        <h4>for {{pattern.headsign}}</h4>
+        <div class="timetables">
+            {% for calendar_name, deps_by_hours in timetables %}
+            <table>
+                <tr>
+                    <th colspan="2">{{calendar_name}}</th>
+                </tr>
+                <tr>
+                    <th>Hour</th>
+                    <th>Minutes</th>
+                </tr>
+                {% for hour, minutes in deps_by_hours %}
+                <tr>
+                    <td>{{hour}}</td>
+                    <td>{{minutes|join:" "}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
