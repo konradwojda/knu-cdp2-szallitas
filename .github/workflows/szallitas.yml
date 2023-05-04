@@ -32,4 +32,5 @@ jobs:
       working-directory: ./szallitas
       run: python manage.py makemigrations --check --dry-run
     - name: Test
-      run: python szallitas/manage.py test
+      working-directory: ./szallitas
+      run: python manage.py test
