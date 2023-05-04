@@ -8,6 +8,7 @@ class GTFSLoader:
     def __init__(self):
         self.agency_mapping: dict[str, int] = dict()
         self.stop_mapping: dict[str, int] = dict()
+        self.line_mapping: dict[str, int] = dict()
 
     def import_agencies(self, file_handler: Iterable[str]) -> None:
         for row in csv.DictReader(file_handler):
@@ -33,3 +34,16 @@ class GTFSLoader:
                 name=name, code=code, lat=lat, lon=lon, wheelchair_accessible=wheelchair_accessible
             )[0]
             self.stop_mapping[stop_id] = new_stop.id
+
+    def import_lines(self, file_handler: Iterable[str]) -> None:
+        for row in csv.DictReader(file_handler):
+            line_id = row["route_id"]
+            code = row["route_short_name"]
+            description = row["route_long_name"]
+            line_type = int(row["route_type"])
+            agency_id = row["agency_id"]
+            agency = Agency.objects.get(id=self.agency_mapping[agency_id])
+            new_line = Line.objects.update_or_create(
+                code=code, description=description, line_type=line_type, agency=agency
+            )[0]
+            self.line_mapping[line_id] = new_line.id

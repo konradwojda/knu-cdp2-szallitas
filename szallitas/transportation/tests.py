@@ -36,3 +36,19 @@ class GTFSImportTestCase(TestCase):
         self.assertEqual(stop.lat, Decimal("52.324181"))
         self.assertEqual(stop.lon, Decimal("20.910699"))
         self.assertEqual(stop.wheelchair_accessible, 0)
+
+    def test_import_lines(self):
+        # TODO: Add test files instead of strings
+        test_csv = """agency_id,route_id,route_short_name,route_long_name,route_type
+0,1,1,"Dziekanów Leśny — Dąbrowa Zachodnia (— Osiedle Równoległa)",3"""
+        agency = Agency.objects.create(name="Test Agency", website="www.test.com")
+        importer = gtfs_import.GTFSLoader()
+        importer.agency_mapping["0"] = agency.id
+        importer.import_lines(StringIO(test_csv))
+        line = Line.objects.get(id=importer.line_mapping["1"])
+        self.assertEqual(line.code, "1")
+        self.assertEqual(
+            line.description, "Dziekanów Leśny — Dąbrowa Zachodnia (— Osiedle Równoległa)"
+        )
+        self.assertEqual(line.line_type, 3)
+        self.assertEqual(line.agency.name, agency.name)
