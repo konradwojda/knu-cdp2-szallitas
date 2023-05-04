@@ -29,6 +29,7 @@ jobs:
     - name: Perform typechecking
       run: pyright
     - name: Check django migrations
-      run: python szallitas/manage.py makemigrations --check --dry-run
+      working-directory: ./szallitas
+      run: python manage.py makemigrations --check --dry-run
     - name: Test
       run: python szallitas/manage.py test
