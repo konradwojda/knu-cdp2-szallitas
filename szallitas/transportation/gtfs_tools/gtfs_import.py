@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime, timedelta
+from io import TextIOWrapper
 from typing import Iterable
 
 from ..models import *
@@ -14,7 +15,26 @@ class GTFSLoader:
         self.calendar_mapping: dict[str, int] = dict()
 
     def from_zip(self, zip_path: str) -> None:
-        pass
+        with ZipFile(zip_path, "r") as zip:
+            with zip.open("agency.txt", "r") as stream:
+                self.import_agencies(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
+            with zip.open("routes.txt", "r") as stream:
+                self.import_lines(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
+            with zip.open("stops.txt", "r") as stream:
+                self.import_stops(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
+            with zip.open("calendar.txt", "r") as stream:
+                self.import_calendars(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
+            with zip.open("calendar_dates.txt", "r") as stream:
+                self.import_calendar_exceptions(
+                    TextIOWrapper(stream, encoding="utf-8-sig", newline="")
+                )
+            with zip.open("trips.txt", "r") as trips_stream, zip.open(
+                "stop_times.txt", "r"
+            ) as stop_times_stream:
+                self.import_patterns(
+                    TextIOWrapper(trips_stream, encoding="utf-8-sig", newline=""),
+                    TextIOWrapper(stop_times_stream, encoding="utf-8-sig", newline=""),
+                )
 
     def import_agencies(self, file_handler: Iterable[str]) -> None:
         for row in csv.DictReader(file_handler):
