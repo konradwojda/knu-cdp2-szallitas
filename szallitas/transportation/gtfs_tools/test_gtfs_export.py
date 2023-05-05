@@ -65,3 +65,18 @@ class GTFSExportTestCase(TestCase):
                 "2,1,1,1,1,1,0,0,20230313,20240229,Mon-Fri\r\n"
             ),
         )
+
+    def test_export_calendar_dates(self) -> None:
+        f = StringIO()
+        GTFSExporter.export_calendars_dates(f)
+        self.assertMultiLineEqual(
+            first_lines(f, 6),
+            (
+                "service_id,date,exception_type\r\n"
+                "2,20230410,2\r\n"
+                "1,20230410,1\r\n"
+                "2,20230501,2\r\n"
+                "1,20230501,1\r\n"
+                "2,20230503,2\r\n"
+            ),
+        )

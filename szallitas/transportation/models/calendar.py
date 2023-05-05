@@ -28,6 +28,8 @@ class Calendar(models.Model):
 
 
 class CalendarException(models.Model):
+    # TODO: Ensure (calendar_id, day) pairs are unique
+
     day = models.DateField()
     added = models.BooleanField()
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)

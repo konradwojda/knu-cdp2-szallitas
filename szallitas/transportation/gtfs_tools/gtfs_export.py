@@ -2,7 +2,7 @@ import csv
 from dataclasses import dataclass
 from typing import IO, Any, Callable, Iterable
 
-from ..models import Agency, Calendar, Line, Stop
+from ..models import Agency, Calendar, CalendarException, Line, Stop
 
 
 @dataclass(frozen=True)
@@ -98,5 +98,25 @@ class GTFSExporter:
                     converter=lambda d: d.strftime("%Y%m%d"),
                 ),
                 FieldMapping(model="name", gtfs="service_desc"),
+            ],
+        )
+
+    @staticmethod
+    def export_calendars_dates(to: IO[str]) -> None:
+        GTFSExporter.export_simple_table(
+            to,
+            CalendarException.objects.all(),
+            [
+                FieldMapping(model="calendar_id", gtfs="service_id"),
+                FieldMapping(
+                    model="day",
+                    gtfs="date",
+                    converter=lambda d: d.strftime("%Y%m%d"),
+                ),
+                FieldMapping(
+                    model="added",
+                    gtfs="exception_type",
+                    converter=lambda added: "1" if added else "2",
+                ),
             ],
         )
