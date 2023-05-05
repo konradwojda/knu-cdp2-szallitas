@@ -71,3 +71,24 @@ Robocze,20230126,20240117,1,1,1,1,1,0,0"""
         self.assertTrue(calendar.friday)
         self.assertFalse(calendar.saturday)
         self.assertFalse(calendar.sunday)
+
+    def test_import_calendar_exceptions(self):
+        # TODO: Add test files instead of strings
+        test_csv = """service_id,date,exception_type
+Robocze,20230410,2"""
+        importer = gtfs_import.GTFSLoader()
+        importer.import_calendar_exceptions(StringIO(test_csv))
+        calendar = Calendar.objects.get(id=importer.calendar_mapping["Robocze"])
+        calendar_exception = calendar.calendar_exception_set.first()
+        assert calendar_exception is not None
+        self.assertEqual(calendar_exception.day, datetime.strptime("20230410", "%Y%m%d").date())
+        self.assertFalse(calendar_exception.added)
+        self.assertEqual(calendar.start_date, datetime.strptime("20000101", "%Y%m%d").date())
+        self.assertEqual(calendar.name, "Robocze")
+        self.assertFalse(calendar.monday)
+        self.assertFalse(calendar.tuesday)
+        self.assertFalse(calendar.wednesday)
+        self.assertFalse(calendar.thursday)
+        self.assertFalse(calendar.friday)
+        self.assertFalse(calendar.saturday)
+        self.assertFalse(calendar.sunday)

@@ -75,3 +75,25 @@ class GTFSLoader:
                 sunday=sunday,
             )[0]
             self.calendar_mapping[service_id] = new_calendar.id
+
+    def import_calendar_exceptions(self, file_handler: Iterable[str]) -> None:
+        for row in csv.DictReader(file_handler):
+            service_id = row["service_id"]
+            day = datetime.strptime(row["date"], "%Y%m%d")
+            added = row["exception_type"] == 1
+            if service_id not in self.calendar_mapping.keys():
+                calendar = Calendar.objects.create(
+                    name=service_id,
+                    start_date="2000-01-01",
+                    monday=0,
+                    tuesday=0,
+                    wednesday=0,
+                    thursday=0,
+                    friday=0,
+                    saturday=0,
+                    sunday=0,
+                )
+                self.calendar_mapping[service_id] = calendar.id
+            else:
+                calendar = Calendar.objects.get(id=self.calendar_mapping[service_id])
+            CalendarException.objects.update_or_create(day=day, added=added, calendar=calendar)
