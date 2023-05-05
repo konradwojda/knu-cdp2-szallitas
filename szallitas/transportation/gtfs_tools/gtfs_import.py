@@ -1,5 +1,5 @@
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Iterable
 
 from ..models import *
@@ -97,3 +97,57 @@ class GTFSLoader:
             else:
                 calendar = Calendar.objects.get(id=self.calendar_mapping[service_id])
             CalendarException.objects.update_or_create(day=day, added=added, calendar=calendar)
+
+    def import_patterns(self, trips_fh: Iterable[str], stop_times_fh: Iterable[str]) -> None:
+        stop_times: dict[str, list[tuple[str, str, str]]] = dict()
+        for row in csv.DictReader(stop_times_fh):
+            trip_id = row["trip_id"]
+            stop_id = row["stop_id"]
+            stop_seq = row["stop_sequence"]
+            departure = row["departure_time"]
+            if trip_id not in stop_times.keys():
+                stop_times[trip_id] = [(stop_id, stop_seq, departure)]
+            else:
+                stop_times[trip_id].append((stop_id, stop_seq, departure))
+        for stop_time in stop_times.values():
+            stop_time.sort(key=lambda x: int(x[1]))
+        for row in csv.DictReader(trips_fh):
+            line_id = row["route_id"]
+            service_id = row["service_id"]
+            trip_id = row["trip_id"]
+            headsign = row.get("trip_headsign")
+            direction = row.get("direction_id")
+            if direction:
+                direction = int(direction)
+            wheelchair_accessible = row.get("wheelchair_accessible")
+            if wheelchair_accessible:
+                wheelchair_accessible = int(wheelchair_accessible)
+            else:
+                wheelchair_accessible = 0
+
+            # TODO: Cache patterns instead of query every time
+            pattern = Pattern.objects.update_or_create(
+                headsign=headsign,
+                direction=direction,
+                line=Line.objects.get(id=self.line_mapping[line_id]),
+            )[0]
+            previous_departure = get_time_as_timedelta(stop_times[trip_id][0][2])
+            for elem in stop_times[trip_id]:
+                travel_time = get_time_as_timedelta(elem[2]) - previous_departure
+                PatternStop.objects.update_or_create(
+                    pattern=pattern,
+                    stop=Stop.objects.get(id=self.stop_mapping[elem[0]]),
+                    travel_time=travel_time,
+                    index=elem[1],
+                )
+            Trip.objects.update_or_create(
+                wheelchair_accessible=wheelchair_accessible,
+                departure=get_time_as_timedelta(stop_times[trip_id][0][2]),
+                pattern=pattern,
+                calendar=Calendar.objects.get(id=self.calendar_mapping[service_id]),
+            )
+
+
+def get_time_as_timedelta(time_str: str) -> timedelta:
+    hours, minutes, seconds = time_str.split(":")
+    return timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
