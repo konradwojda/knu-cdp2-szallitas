@@ -2,7 +2,7 @@ import csv
 import logging
 from typing import IO
 
-from ..models import Agency, Line
+from ..models import Agency, Line, Stop
 
 logger = logging.getLogger(__name__)
 
@@ -45,5 +45,24 @@ class GTFSExporter:
                     line.code,
                     line.description,
                     line.line_type,
+                )
+            )
+
+    @staticmethod
+    def export_stops(to: IO[str]) -> None:
+        w = csv.writer(to)
+        w.writerow(
+            ("stop_id", "stop_name", "stop_code", "stop_lat", "stop_lon", "wheelchair_boarding")
+        )
+
+        for stop in Stop.objects.all():
+            w.writerow(
+                (
+                    stop.id,
+                    stop.name,
+                    stop.code,
+                    stop.lat,
+                    stop.lon,
+                    stop.wheelchair_accessible,
                 )
             )
