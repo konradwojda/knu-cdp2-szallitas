@@ -1,8 +1,9 @@
+from datetime import datetime
 from decimal import Decimal
 from io import StringIO
 
 from django.test import TestCase
-from datetime import datetime
+
 from .gtfs_tools import gtfs_import
 from .models import *
 

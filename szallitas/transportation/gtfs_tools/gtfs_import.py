@@ -1,6 +1,6 @@
 import csv
-from typing import Iterable
 from datetime import datetime
+from typing import Iterable
 
 from ..models import *
 
