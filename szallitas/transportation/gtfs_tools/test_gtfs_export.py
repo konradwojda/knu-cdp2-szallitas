@@ -52,3 +52,16 @@ class GTFSExportTestCase(TestCase):
                 "5,Warszawa Aleje Jerozolimskie,,52.205325,20.942254,1\r\n"
             ),
         )
+
+    def test_export_calendars(self) -> None:
+        f = StringIO()
+        GTFSExporter.export_calendars(f)
+        self.assertMultiLineEqual(
+            f.getvalue(),
+            (
+                "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,"
+                "start_date,end_date,service_desc\r\n"
+                "1,0,0,0,0,0,1,1,20230313,20240229,Sat-Sun\r\n"
+                "2,1,1,1,1,1,0,0,20230313,20240229,Mon-Fri\r\n"
+            ),
+        )

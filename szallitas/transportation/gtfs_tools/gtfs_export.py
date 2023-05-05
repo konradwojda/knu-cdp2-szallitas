@@ -1,8 +1,8 @@
 import csv
 from dataclasses import dataclass
-from typing import IO, Any, Iterable
+from typing import IO, Any, Callable, Iterable
 
-from ..models import Agency, Line, Stop
+from ..models import Agency, Calendar, Line, Stop
 
 
 @dataclass(frozen=True)
@@ -10,6 +10,7 @@ class FieldMapping:
     model: str
     gtfs: str
     fallback: str = ""
+    converter: Callable[[Any], Any] | None = None
 
 
 class GTFSExporter:
@@ -19,7 +20,15 @@ class GTFSExporter:
     ) -> None:
         w = csv.writer(to)
         w.writerow(f.gtfs for f in fields)
-        w.writerows((getattr(obj, f.model) or f.fallback for f in fields) for obj in objects)
+        w.writerows(
+            (
+                f.converter(getattr(obj, f.model))
+                if f.converter
+                else (getattr(obj, f.model) or f.fallback)
+                for f in fields
+            )
+            for obj in objects
+        )
 
     @staticmethod
     def export_agencies(to: IO[str]) -> None:
@@ -61,5 +70,33 @@ class GTFSExporter:
                 FieldMapping(model="lat", gtfs="stop_lat"),
                 FieldMapping(model="lon", gtfs="stop_lon"),
                 FieldMapping(model="wheelchair_accessible", gtfs="wheelchair_boarding"),
+            ],
+        )
+
+    @staticmethod
+    def export_calendars(to: IO[str]) -> None:
+        GTFSExporter.export_simple_table(
+            to,
+            Calendar.objects.all(),
+            [
+                FieldMapping(model="id", gtfs="service_id"),
+                FieldMapping(model="monday", gtfs="monday", converter=int),
+                FieldMapping(model="tuesday", gtfs="tuesday", converter=int),
+                FieldMapping(model="wednesday", gtfs="wednesday", converter=int),
+                FieldMapping(model="thursday", gtfs="thursday", converter=int),
+                FieldMapping(model="friday", gtfs="friday", converter=int),
+                FieldMapping(model="saturday", gtfs="saturday", converter=int),
+                FieldMapping(model="sunday", gtfs="sunday", converter=int),
+                FieldMapping(
+                    model="start_date",
+                    gtfs="start_date",
+                    converter=lambda d: d.strftime("%Y%m%d"),
+                ),
+                FieldMapping(
+                    model="end_date",
+                    gtfs="end_date",
+                    converter=lambda d: d.strftime("%Y%m%d"),
+                ),
+                FieldMapping(model="name", gtfs="service_desc"),
             ],
         )
