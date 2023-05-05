@@ -80,3 +80,28 @@ class GTFSExportTestCase(TestCase):
                 "2,20230503,2\r\n"
             ),
         )
+
+    def test_export_trips_and_stop_times(self) -> None:
+        f_trips = StringIO()
+        f_times = StringIO()
+        GTFSExporter.export_trips_and_stop_times(f_trips, f_times)
+
+        trips = f_trips.getvalue().split("\r\n")
+        self.assertEqual(len(trips), 378)
+        self.assertEqual(
+            trips[0],
+            "route_id,service_id,trip_id,trip_headsign,direction_id,wheelchair_accessible",
+        )
+        self.assertEqual(trips[1], "1,1,1,Podkowa Leśna Główna,0,1")
+        self.assertEqual(trips[101], "1,2,101,Podkowa Leśna Główna,0,1")
+        self.assertEqual(trips[201], "1,1,201,Warszawa Śródmieście WKD,1,1")
+        self.assertEqual(trips[301], "1,2,301,Warszawa Śródmieście WKD,1,1")
+
+        times = f_times.getvalue().split("\r\n")
+        self.assertEqual(len(times), 6290)
+        self.assertEqual(times[0], "trip_id,stop_sequence,stop_id,arrival_time,departure_time")
+        self.assertEqual(times[1], "1,0,1,05:05:00,05:05:00")
+        self.assertEqual(times[2], "1,1,2,05:07:00,05:07:00")
+        self.assertEqual(times[3], "1,2,3,05:10:00,05:10:00")
+        self.assertEqual(times[19], "1,18,19,05:46:00,05:46:00")
+        self.assertEqual(times[20], "2,0,1,05:40:00,05:40:00")

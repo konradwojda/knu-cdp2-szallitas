@@ -2,7 +2,13 @@ import csv
 from dataclasses import dataclass
 from typing import IO, Any, Callable, Iterable
 
-from ..models import Agency, Calendar, CalendarException, Line, Stop
+from ..models import Agency, Calendar, CalendarException, Line, Pattern, Stop
+
+
+def seconds_to_gtfs_time(s: int) -> str:
+    m, s = divmod(s, 60)
+    h, m = divmod(m, 60)
+    return f"{h:0>2}:{m:0>2}:{s:0>2}"
 
 
 @dataclass(frozen=True)
@@ -120,3 +126,48 @@ class GTFSExporter:
                 ),
             ],
         )
+
+    @staticmethod
+    def export_trips_and_stop_times(f_trips: IO[str], f_times: IO[str]) -> None:
+        w_trips = csv.writer(f_trips)
+        w_trips.writerow(
+            (
+                "route_id",
+                "service_id",
+                "trip_id",
+                "trip_headsign",
+                "direction_id",
+                "wheelchair_accessible",
+            )
+        )
+
+        w_times = csv.writer(f_times)
+        w_times.writerow(("trip_id", "stop_sequence", "stop_id", "arrival_time", "departure_time"))
+
+        for pattern in Pattern.objects.all():
+            pattern_stops = pattern.pattern_stop_set.all()
+
+            for trip in pattern.trip_set.all():
+                w_trips.writerow(
+                    (
+                        pattern.line_id,
+                        trip.calendar_id,
+                        trip.id,
+                        pattern.headsign or "",
+                        pattern.direction if pattern.direction is not None else "",
+                        trip.wheelchair_accessible,
+                    )
+                )
+
+                for pattern_stop in pattern_stops:
+                    time_at_stop = trip.departure + pattern_stop.travel_time
+                    gtfs_time_at_stop = seconds_to_gtfs_time(round(time_at_stop.total_seconds()))
+                    w_times.writerow(
+                        (
+                            trip.id,
+                            pattern_stop.index,
+                            pattern_stop.stop_id,
+                            gtfs_time_at_stop,
+                            gtfs_time_at_stop,
+                        )
+                    )
