@@ -2,7 +2,7 @@ from decimal import Decimal
 from io import StringIO
 
 from django.test import TestCase
-
+from datetime import datetime
 from .gtfs_tools import gtfs_import
 from .models import *
 
@@ -52,3 +52,21 @@ class GTFSImportTestCase(TestCase):
         )
         self.assertEqual(line.line_type, 3)
         self.assertEqual(line.agency.name, agency.name)
+
+    def test_import_calendars(self):
+        # TODO: Add test files instead of strings
+        test_csv = """service_id,start_date,end_date,monday,tuesday,wednesday,thursday,friday,saturday,sunday
+Robocze,20230126,20240117,1,1,1,1,1,0,0"""
+        importer = gtfs_import.GTFSLoader()
+        importer.import_calendars(StringIO(test_csv))
+        calendar = Calendar.objects.get(id=importer.calendar_mapping["Robocze"])
+        self.assertEqual(calendar.name, "Robocze")
+        self.assertEqual(calendar.start_date, datetime.strptime("20230126", "%Y%m%d").date())
+        self.assertEqual(calendar.end_date, datetime.strptime("20240117", "%Y%m%d").date())
+        self.assertTrue(calendar.monday)
+        self.assertTrue(calendar.tuesday)
+        self.assertTrue(calendar.wednesday)
+        self.assertTrue(calendar.thursday)
+        self.assertTrue(calendar.friday)
+        self.assertFalse(calendar.saturday)
+        self.assertFalse(calendar.sunday)

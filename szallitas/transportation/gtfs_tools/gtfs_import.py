@@ -1,5 +1,6 @@
 import csv
 from typing import Iterable
+from datetime import datetime
 
 from ..models import *
 
@@ -9,6 +10,7 @@ class GTFSLoader:
         self.agency_mapping: dict[str, int] = dict()
         self.stop_mapping: dict[str, int] = dict()
         self.line_mapping: dict[str, int] = dict()
+        self.calendar_mapping: dict[str, int] = dict()
 
     def import_agencies(self, file_handler: Iterable[str]) -> None:
         for row in csv.DictReader(file_handler):
@@ -47,3 +49,29 @@ class GTFSLoader:
                 code=code, description=description, line_type=line_type, agency=agency
             )[0]
             self.line_mapping[line_id] = new_line.id
+
+    def import_calendars(self, file_handler: Iterable[str]) -> None:
+        for row in csv.DictReader(file_handler):
+            service_id = row["service_id"]
+            start_date = datetime.strptime(row["start_date"], "%Y%m%d")
+            end_date = datetime.strptime(row["end_date"], "%Y%m%d")
+            monday = row["monday"]
+            tuesday = row["tuesday"]
+            wednesday = row["wednesday"]
+            thursday = row["thursday"]
+            friday = row["friday"]
+            saturday = row["saturday"]
+            sunday = row["sunday"]
+            new_calendar = Calendar.objects.update_or_create(
+                name=service_id,
+                start_date=start_date,
+                end_date=end_date,
+                monday=monday,
+                tuesday=tuesday,
+                wednesday=wednesday,
+                thursday=thursday,
+                friday=friday,
+                saturday=saturday,
+                sunday=sunday,
+            )[0]
+            self.calendar_mapping[service_id] = new_calendar.id
