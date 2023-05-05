@@ -1,10 +1,11 @@
 import csv
 from datetime import datetime, timedelta
 from io import TextIOWrapper
+from pathlib import Path
 from typing import Iterable
+from zipfile import ZipFile
 
 from ..models import *
-from zipfile import ZipFile
 
 
 class GTFSLoader:
@@ -14,7 +15,7 @@ class GTFSLoader:
         self.line_mapping: dict[str, int] = dict()
         self.calendar_mapping: dict[str, int] = dict()
 
-    def from_zip(self, zip_path: str) -> None:
+    def from_zip(self, zip_path: str | Path) -> None:
         with ZipFile(zip_path, "r") as zip:
             with zip.open("agency.txt", "r") as stream:
                 self.import_agencies(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
