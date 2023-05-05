@@ -22,7 +22,7 @@ from ...models import (
 
 FIXTURE_SCHEDULES_FILE = Path(__file__).parent / "fixtures" / "schedules.json"
 
-FIXTURE_AGENCY = Agency(id=1, name="WKD", website="https://wkd.com.pl")
+FIXTURE_AGENCY = Agency(id=1, name="WKD", website="https://wkd.com.pl", timezone="Europe/Warsaw")
 
 FIXTURE_STOPS = {
     "wsrod": Stop(
