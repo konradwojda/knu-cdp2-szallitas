@@ -2,7 +2,7 @@ import csv
 import logging
 from typing import IO
 
-from ..models import Agency
+from ..models import Agency, Line
 
 logger = logging.getLogger(__name__)
 
@@ -29,5 +29,21 @@ class GTFSExporter:
                     agency.website,
                     agency.timezone or "UTC",
                     agency.telephone or "",
+                )
+            )
+
+    @staticmethod
+    def export_routes(to: IO[str]) -> None:
+        w = csv.writer(to)
+        w.writerow(("route_id", "agency_id", "route_short_name", "route_long_name", "route_type"))
+
+        for line in Line.objects.all():
+            w.writerow(
+                (
+                    line.id,
+                    line.agency_id,
+                    line.code,
+                    line.description,
+                    line.line_type,
                 )
             )
