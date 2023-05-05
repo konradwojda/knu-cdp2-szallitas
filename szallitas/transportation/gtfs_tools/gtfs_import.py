@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from typing import Iterable
 
 from ..models import *
+from zipfile import ZipFile
 
 
 class GTFSLoader:
@@ -11,6 +12,9 @@ class GTFSLoader:
         self.stop_mapping: dict[str, int] = dict()
         self.line_mapping: dict[str, int] = dict()
         self.calendar_mapping: dict[str, int] = dict()
+
+    def from_zip(self, zip_path: str) -> None:
+        pass
 
     def import_agencies(self, file_handler: Iterable[str]) -> None:
         for row in csv.DictReader(file_handler):
@@ -53,6 +57,11 @@ class GTFSLoader:
     def import_calendars(self, file_handler: Iterable[str]) -> None:
         for row in csv.DictReader(file_handler):
             service_id = row["service_id"]
+            desc = row.get("service_desc")
+            if desc:
+                name = desc
+            else:
+                name = service_id
             start_date = datetime.strptime(row["start_date"], "%Y%m%d")
             end_date = datetime.strptime(row["end_date"], "%Y%m%d")
             monday = row["monday"]
@@ -63,7 +72,7 @@ class GTFSLoader:
             saturday = row["saturday"]
             sunday = row["sunday"]
             new_calendar = Calendar.objects.update_or_create(
-                name=service_id,
+                name=name,
                 start_date=start_date,
                 end_date=end_date,
                 monday=monday,
