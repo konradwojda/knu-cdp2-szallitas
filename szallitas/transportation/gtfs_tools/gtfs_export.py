@@ -1,68 +1,65 @@
 import csv
-import logging
-from typing import IO
+from dataclasses import dataclass
+from typing import IO, Any, Iterable
 
 from ..models import Agency, Line, Stop
 
-logger = logging.getLogger(__name__)
+
+@dataclass(frozen=True)
+class FieldMapping:
+    model: str
+    gtfs: str
+    fallback: str = ""
 
 
 class GTFSExporter:
     @staticmethod
-    def export_agencies(to: IO[str]) -> None:
+    def export_simple_table(
+        to: IO[str], objects: Iterable[Any], fields: list[FieldMapping]
+    ) -> None:
         w = csv.writer(to)
-        w.writerow(("agency_id", "agency_name", "agency_url", "agency_timezone", "agency_phone"))
+        w.writerow(f.gtfs for f in fields)
+        w.writerows((getattr(obj, f.model) or f.fallback for f in fields) for obj in objects)
 
-        for agency in Agency.objects.all():
-            # Warn if required GTFS fields are missing
-            if not agency.timezone:
-                logger.warn(
-                    "Agency %s (ID %d) has no timezone - using UTC",
-                    agency.name,
-                    agency.id,
-                )
-
-            w.writerow(
-                (
-                    agency.id,
-                    agency.name,
-                    agency.website,
-                    agency.timezone or "UTC",
-                    agency.telephone or "",
-                )
-            )
+    @staticmethod
+    def export_agencies(to: IO[str]) -> None:
+        GTFSExporter.export_simple_table(
+            to,
+            Agency.objects.all(),
+            [
+                FieldMapping(model="id", gtfs="agency_id"),
+                FieldMapping(model="name", gtfs="agency_name"),
+                FieldMapping(model="website", gtfs="agency_url"),
+                FieldMapping(model="timezone", gtfs="agency_timezone", fallback="UTC"),
+                FieldMapping(model="telephone", gtfs="agency_phone"),
+            ],
+        )
 
     @staticmethod
     def export_routes(to: IO[str]) -> None:
-        w = csv.writer(to)
-        w.writerow(("route_id", "agency_id", "route_short_name", "route_long_name", "route_type"))
-
-        for line in Line.objects.all():
-            w.writerow(
-                (
-                    line.id,
-                    line.agency_id,
-                    line.code,
-                    line.description,
-                    line.line_type,
-                )
-            )
+        GTFSExporter.export_simple_table(
+            to,
+            Line.objects.all(),
+            [
+                FieldMapping(model="id", gtfs="route_id"),
+                FieldMapping(model="agency_id", gtfs="agency_id"),
+                FieldMapping(model="code", gtfs="route_short_name"),
+                FieldMapping(model="description", gtfs="route_long_name"),
+                FieldMapping(model="line_type", gtfs="route_type"),
+            ],
+        )
 
     @staticmethod
     def export_stops(to: IO[str]) -> None:
-        w = csv.writer(to)
-        w.writerow(
-            ("stop_id", "stop_name", "stop_code", "stop_lat", "stop_lon", "wheelchair_boarding")
+        GTFSExporter.export_simple_table(
+            to,
+            Stop.objects.all(),
+            [
+                FieldMapping(model="id", gtfs="stop_id"),
+                FieldMapping(model="name", gtfs="stop_name"),
+                FieldMapping(model="code", gtfs="stop_code"),
+                FieldMapping(model="lat", gtfs="stop_lat"),
+                FieldMapping(model="lon", gtfs="stop_lon"),
+                FieldMapping(model="wheelchair_accessible", gtfs="wheelchair_boarding"),
+            ],
         )
-
-        for stop in Stop.objects.all():
-            w.writerow(
-                (
-                    stop.id,
-                    stop.name,
-                    stop.code,
-                    stop.lat,
-                    stop.lon,
-                    stop.wheelchair_accessible,
-                )
-            )
