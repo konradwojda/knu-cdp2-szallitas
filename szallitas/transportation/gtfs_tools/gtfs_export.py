@@ -174,7 +174,7 @@ def export_trips_and_stop_times(f_trips: IO[str], f_times: IO[str]) -> None:
     w_times.writerow(("trip_id", "stop_sequence", "stop_id", "arrival_time", "departure_time"))
 
     for pattern in Pattern.objects.all():
-        pattern_stops = pattern.pattern_stop_set.all()
+        pattern_stops = list(pattern.pattern_stop_set.all())
 
         for trip in pattern.trip_set.all():
             w_trips.writerow(
