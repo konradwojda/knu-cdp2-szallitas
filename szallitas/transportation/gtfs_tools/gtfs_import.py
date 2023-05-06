@@ -149,8 +149,10 @@ class GTFSLoader:
             line_id = row["route_id"]
             service_id = row["service_id"]
             trip_id = row["trip_id"]
-            # TODO: Name of last stop as default
-            headsign = row.get("trip_headsign", "")
+            headsign = row.get(
+                "trip_headsign",
+                Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1][0]]).name,
+            )
             direction_str = row.get("direction_id")
             if direction_str:
                 direction = int(direction_str)
