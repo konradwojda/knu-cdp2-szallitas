@@ -149,20 +149,20 @@ Robocze,20230410,2"""
         self.assertFalse(calendar.saturday)
         self.assertFalse(calendar.sunday)
 
-        self.assertEqual(Pattern.objects.count(), 11)
+        self.assertEqual(Pattern.objects.count(), 18)
         pattern = Pattern.objects.first()
         assert pattern is not None
         self.assertEqual(pattern.headsign, "Osiedle Równoległa")
         self.assertEqual(pattern.direction, 0)
         self.assertEqual(pattern.line.code, "1")
 
-        self.assertEqual(PatternStop.objects.count(), 186)
+        self.assertEqual(PatternStop.objects.count(), 332)
         patternstop = PatternStop.objects.first()
         assert patternstop is not None
         self.assertEqual(patternstop.pattern.id, 1)
         self.assertEqual(patternstop.stop.name, "Dziekanów Leśny 01")
         self.assertEqual(patternstop.travel_time, timedelta(0))
-        self.assertEqual(patternstop.index, 1)
+        self.assertEqual(patternstop.index, 0)
 
         self.assertEqual(Trip.objects.count(), 61)
         trip = Trip.objects.first()
