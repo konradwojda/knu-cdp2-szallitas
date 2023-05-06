@@ -17,10 +17,17 @@ class Stoptime:
 
 
 @dataclass(frozen=True)
+class PatternStopData:
+    stop_id: str
+    travel_time: timedelta
+
+
+@dataclass(frozen=True)
 class PatternData:
     headsign: str
     direction: int | None
     line_id: str
+    stops: tuple[PatternStopData, ...]
 
 
 class GTFSLoader:
@@ -163,34 +170,33 @@ class GTFSLoader:
                 "trip_headsign",
                 Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1].stop_id]).name,
             )
-            direction_str = row.get("direction_id")
-            if direction_str:
-                direction = int(direction_str)
-            else:
-                direction = None
-            wheelchair_accessible = row.get("wheelchair_accessible")
-            if wheelchair_accessible:
-                wheelchair_accessible = int(wheelchair_accessible)
-            else:
-                wheelchair_accessible = 0
+            direction = int(row["direction_id"]) if "direction_id" in row else None
+            wheelchair_accessible = (
+                int(row["wheelchair_accessible"]) if "wheelchair_accessible" in row else 0
+            )
 
-            pattern_id = added_patterns.get(PatternData(headsign, direction, line_id))
+            pattern_stops: list[PatternStopData] = []
+            trip_start_time = get_time_as_timedelta(stop_times[trip_id][0].departure)
+            for elem in stop_times[trip_id]:
+                travel_time = get_time_as_timedelta(elem.departure) - trip_start_time
+                pattern_stops.append(PatternStopData(elem.stop_id, travel_time))
+
+            pattern_data = PatternData(headsign, direction, line_id, tuple(pattern_stops))
+            pattern_id = added_patterns.get(pattern_data)
             if not pattern_id:
                 pattern = Pattern.objects.create(
                     headsign=headsign,
                     direction=direction,
                     line=Line.objects.get(id=self.line_mapping[line_id]),
                 )
-                added_patterns[PatternData(headsign, direction, line_id)] = pattern.id
+                added_patterns[pattern_data] = pattern.id
 
-                trip_start_time = get_time_as_timedelta(stop_times[trip_id][0].departure)
-                for elem in stop_times[trip_id]:
-                    travel_time = get_time_as_timedelta(elem.departure) - trip_start_time
+                for idx, pattern_stop in enumerate(pattern_stops):
                     PatternStop.objects.create(
                         pattern=pattern,
-                        stop=Stop.objects.get(id=self.stop_mapping[elem.stop_id]),
-                        travel_time=travel_time,
-                        index=elem.stop_seq,
+                        stop=Stop.objects.get(id=self.stop_mapping[pattern_stop.stop_id]),
+                        travel_time=pattern_stop.travel_time,
+                        index=idx,
                     )
             else:
                 pattern = Pattern.objects.get(id=pattern_id)
