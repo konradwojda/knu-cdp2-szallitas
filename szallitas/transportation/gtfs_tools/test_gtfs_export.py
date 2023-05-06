@@ -1,5 +1,7 @@
 from datetime import date
 from io import StringIO
+from tempfile import TemporaryFile
+from zipfile import ZipFile
 
 from django.test import TestCase
 
@@ -134,3 +136,24 @@ class GTFSExportTestCase(TestCase):
         self.assertEqual(times[3], "1,2,3,05:10:00,05:10:00")
         self.assertEqual(times[19], "1,18,19,05:46:00,05:46:00")
         self.assertEqual(times[20], "2,0,1,05:40:00,05:40:00")
+
+    def test_export_all(self) -> None:
+        with TemporaryFile(mode="w+b") as zip_buffer:
+            # Export to GTFS data
+            gtfs_export.export_all(zip_buffer)
+            zip_buffer.seek(0)
+
+            # Check if all tables were created
+            with ZipFile(zip_buffer) as archive:
+                self.assertSetEqual(
+                    set(archive.namelist()),
+                    {
+                        "agency.txt",
+                        "routes.txt",
+                        "stops.txt",
+                        "calendar.txt",
+                        "calendar_dates.txt",
+                        "trips.txt",
+                        "stop_times.txt",
+                    },
+                )

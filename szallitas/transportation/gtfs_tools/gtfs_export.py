@@ -1,6 +1,9 @@
 import csv
 from dataclasses import dataclass
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import IO, Any, Callable, Iterable
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..models import Agency, Calendar, CalendarException, Line, Pattern, Stop
 
@@ -10,6 +13,10 @@ def seconds_to_gtfs_time(s: int) -> str:
     m, s = divmod(s, 60)
     h, m = divmod(m, 60)
     return f"{h:0>2}:{m:0>2}:{s:0>2}"
+
+
+def open_table(path: Path) -> IO[str]:
+    return path.open(mode="w", encoding="utf-8", newline="")
 
 
 @dataclass(frozen=True)
@@ -193,3 +200,47 @@ def export_trips_and_stop_times(f_trips: IO[str], f_times: IO[str]) -> None:
                         gtfs_time_at_stop,
                     )
                 )
+
+
+def export_all(to_zip: IO[bytes]) -> None:
+    """export_all exports currently stored data as GTFS.
+    The resulting ZIP archive is written to the provided handle.
+    """
+
+    # NOTE: TemporaryDirectory necessary for simultaneous opening
+    #       of trips.txt and stop_times.txt
+
+    with TemporaryDirectory(prefix="szallitas-gtfs-export") as temp_dir_str:
+        temp_dir = Path(temp_dir_str)
+
+        # Export files
+        with open_table(temp_dir / "agency.txt") as f:
+            export_agencies(f)
+        with open_table(temp_dir / "routes.txt") as f:
+            export_routes(f)
+        with open_table(temp_dir / "stops.txt") as f:
+            export_stops(f)
+        with open_table(temp_dir / "calendar.txt") as f:
+            export_calendars(f)
+        with open_table(temp_dir / "calendar_dates.txt") as f:
+            export_calendars_dates(f)
+        with (
+            open_table(temp_dir / "trips.txt") as f_trips,
+            open_table(temp_dir / "stop_times.txt") as f_times,
+        ):
+            export_trips_and_stop_times(f_trips, f_times)
+
+        # Export to GTFS zip
+        with ZipFile(to_zip, mode="w", compression=ZIP_DEFLATED) as archive:
+            file_names = [
+                "agency.txt",
+                "routes.txt",
+                "stops.txt",
+                "calendar.txt",
+                "calendar_dates.txt",
+                "trips.txt",
+                "stop_times.txt",
+            ]
+
+            for file_name in file_names:
+                archive.write(temp_dir / file_name, file_name)
