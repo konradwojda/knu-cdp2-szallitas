@@ -5,7 +5,6 @@ from django.test import TestCase
 
 from ..management.commands.load_sample_data import load_wkd_fixture_database
 from . import gtfs_export
-from .gtfs_export import GTFSExporter
 
 
 def first_lines(f: StringIO, n_lines: int = 10) -> str:
@@ -46,7 +45,7 @@ class GTFSExportTestCase(TestCase):
 
     def test_export_agencies(self) -> None:
         f = StringIO()
-        GTFSExporter.export_agencies(f)
+        gtfs_export.export_agencies(f)
         self.assertMultiLineEqual(
             f.getvalue(),
             (
@@ -57,7 +56,7 @@ class GTFSExportTestCase(TestCase):
 
     def test_export_routes(self) -> None:
         f = StringIO()
-        GTFSExporter.export_routes(f)
+        gtfs_export.export_routes(f)
         self.assertMultiLineEqual(
             f.getvalue(),
             (
@@ -70,7 +69,7 @@ class GTFSExportTestCase(TestCase):
 
     def test_export_stops(self) -> None:
         f = StringIO()
-        GTFSExporter.export_stops(f)
+        gtfs_export.export_stops(f)
         self.assertMultiLineEqual(
             first_lines(f, 6),
             (
@@ -85,7 +84,7 @@ class GTFSExportTestCase(TestCase):
 
     def test_export_calendars(self) -> None:
         f = StringIO()
-        GTFSExporter.export_calendars(f)
+        gtfs_export.export_calendars(f)
         self.assertMultiLineEqual(
             f.getvalue(),
             (
@@ -98,7 +97,7 @@ class GTFSExportTestCase(TestCase):
 
     def test_export_calendar_dates(self) -> None:
         f = StringIO()
-        GTFSExporter.export_calendars_dates(f)
+        gtfs_export.export_calendars_dates(f)
         self.assertMultiLineEqual(
             first_lines(f, 6),
             (
@@ -114,7 +113,7 @@ class GTFSExportTestCase(TestCase):
     def test_export_trips_and_stop_times(self) -> None:
         f_trips = StringIO()
         f_times = StringIO()
-        GTFSExporter.export_trips_and_stop_times(f_trips, f_times)
+        gtfs_export.export_trips_and_stop_times(f_trips, f_times)
 
         trips = f_trips.getvalue().split("\r\n")
         self.assertEqual(len(trips), 378)
