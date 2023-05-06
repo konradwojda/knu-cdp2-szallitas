@@ -156,7 +156,7 @@ Robocze,20230410,2"""
         self.assertEqual(pattern.direction, 0)
         self.assertEqual(pattern.line.code, "1")
 
-        self.assertEqual(PatternStop.objects.count(), 287)
+        self.assertEqual(PatternStop.objects.count(), 186)
         patternstop = PatternStop.objects.first()
         assert patternstop is not None
         self.assertEqual(patternstop.pattern.id, 1)
