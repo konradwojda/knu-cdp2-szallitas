@@ -5,8 +5,8 @@ from pathlib import Path
 
 from django.test import TestCase
 
-from . import gtfs_import
 from ..models import *
+from . import gtfs_import
 
 FIXTURES_DIR = Path(__file__).with_name("fixtures")
 
