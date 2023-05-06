@@ -6,6 +6,7 @@ from ..models import Agency, Calendar, CalendarException, Line, Pattern, Stop
 
 
 def seconds_to_gtfs_time(s: int) -> str:
+    """seconds_to_gtfs_time converts seconds-since-midnight into a GTFS-compliant string."""
     m, s = divmod(s, 60)
     h, m = divmod(m, 60)
     return f"{h:0>2}:{m:0>2}:{s:0>2}"

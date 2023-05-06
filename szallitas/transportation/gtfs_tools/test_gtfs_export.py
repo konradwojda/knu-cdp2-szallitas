@@ -3,11 +3,19 @@ from io import StringIO
 from django.test import TestCase
 
 from ..management.commands.load_sample_data import load_wkd_fixture_database
+from . import gtfs_export
 from .gtfs_export import GTFSExporter
 
 
 def first_lines(f: StringIO, n_lines: int = 10) -> str:
     return "\r\n".join(f.getvalue().split("\r\n")[:n_lines]) + "\r\n"
+
+
+class SecondsToGTFSTimeTestCase(TestCase):
+    def test(self) -> None:
+        self.assertEqual(gtfs_export.seconds_to_gtfs_time(8 * 3600 + 15 * 60 + 30), "08:15:30")
+        self.assertEqual(gtfs_export.seconds_to_gtfs_time(12 * 3600 + 5 * 60), "12:05:00")
+        self.assertEqual(gtfs_export.seconds_to_gtfs_time(25 * 3600 + 48 * 60 + 20), "25:48:20")
 
 
 class GTFSExportTestCase(TestCase):
