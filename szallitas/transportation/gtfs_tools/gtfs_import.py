@@ -121,7 +121,7 @@ class GTFSLoader:
         for row in csv.DictReader(file_handler):
             service_id = row["service_id"]
             day = datetime.strptime(row["date"], "%Y%m%d")
-            added = row["exception_type"] == 1
+            added = row["exception_type"] == "1"
             if service_id not in self.calendar_mapping.keys():
                 calendar = Calendar.objects.create(
                     name=service_id,
