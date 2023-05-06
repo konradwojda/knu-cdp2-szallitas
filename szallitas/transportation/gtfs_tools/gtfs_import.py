@@ -144,7 +144,6 @@ class GTFSLoader:
             CalendarException.objects.create(day=day, added=added, calendar=calendar)
 
     def import_patterns(self, trips_fh: Iterable[str], stop_times_fh: Iterable[str]) -> None:
-        # TODO: Use namedtuples/dataclasses for better clarity
         stop_times: dict[str, list[Stoptime]] = dict()
         added_patterns: dict[PatternData, int] = dict()
         for row in csv.DictReader(stop_times_fh):
