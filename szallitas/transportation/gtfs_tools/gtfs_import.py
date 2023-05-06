@@ -93,11 +93,7 @@ class GTFSLoader:
     def import_calendars(self, file_handler: Iterable[str]) -> None:
         for row in csv.DictReader(file_handler):
             service_id = row["service_id"]
-            desc = row.get("service_desc")
-            if desc:
-                name = desc
-            else:
-                name = service_id
+            desc = row.get("service_desc") or service_id
             start_date = datetime.strptime(row["start_date"], "%Y%m%d")
             end_date = datetime.strptime(row["end_date"], "%Y%m%d")
             monday = row["monday"]
@@ -108,7 +104,7 @@ class GTFSLoader:
             saturday = row["saturday"]
             sunday = row["sunday"]
             new_calendar = Calendar.objects.create(
-                name=name,
+                name=desc,
                 start_date=start_date,
                 end_date=end_date,
                 monday=monday,
