@@ -183,9 +183,9 @@ class GTFSLoader:
                 )
                 added_patterns[PatternData(headsign, direction, line_id)] = pattern.id
 
-                previous_departure = get_time_as_timedelta(stop_times[trip_id][0].departure)
+                trip_start_time = get_time_as_timedelta(stop_times[trip_id][0].departure)
                 for elem in stop_times[trip_id]:
-                    travel_time = get_time_as_timedelta(elem.departure) - previous_departure
+                    travel_time = get_time_as_timedelta(elem.departure) - trip_start_time
                     PatternStop.objects.create(
                         pattern=pattern,
                         stop=Stop.objects.get(id=self.stop_mapping[elem.stop_id]),
