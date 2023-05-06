@@ -7,6 +7,22 @@ from zipfile import ZipFile
 
 from ..models import *
 
+from dataclasses import dataclass
+
+
+@dataclass
+class Stoptime:
+    stop_id: str
+    stop_seq: str
+    departure: str
+
+
+@dataclass(frozen=True)
+class PatternData:
+    headsign: str
+    direction: int | None
+    line_id: str
+
 
 class GTFSLoader:
     def __init__(self):
@@ -130,20 +146,20 @@ class GTFSLoader:
 
     def import_patterns(self, trips_fh: Iterable[str], stop_times_fh: Iterable[str]) -> None:
         # TODO: Use namedtuples/dataclasses for better clarity
-        stop_times: dict[str, list[tuple[str, str, str]]] = dict()
-        added_patterns: dict[tuple[str, int | None, str], int] = dict()
+        stop_times: dict[str, list[Stoptime]] = dict()
+        added_patterns: dict[PatternData, int] = dict()
         for row in csv.DictReader(stop_times_fh):
             trip_id = row["trip_id"]
             stop_id = row["stop_id"]
             stop_seq = row["stop_sequence"]
             departure = row["departure_time"]
             if trip_id not in stop_times.keys():
-                stop_times[trip_id] = [(stop_id, stop_seq, departure)]
+                stop_times[trip_id] = [Stoptime(stop_id, stop_seq, departure)]
             else:
-                stop_times[trip_id].append((stop_id, stop_seq, departure))
+                stop_times[trip_id].append(Stoptime(stop_id, stop_seq, departure))
 
         for stop_time in stop_times.values():
-            stop_time.sort(key=lambda x: int(x[1]))
+            stop_time.sort(key=lambda x: int(x.stop_seq))
 
         for row in csv.DictReader(trips_fh):
             line_id = row["route_id"]
@@ -151,7 +167,7 @@ class GTFSLoader:
             trip_id = row["trip_id"]
             headsign = row.get(
                 "trip_headsign",
-                Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1][0]]).name,
+                Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1].stop_id]).name,
             )
             direction_str = row.get("direction_id")
             if direction_str:
@@ -164,30 +180,30 @@ class GTFSLoader:
             else:
                 wheelchair_accessible = 0
 
-            pattern_id = added_patterns.get((headsign, direction, line_id))
+            pattern_id = added_patterns.get(PatternData(headsign, direction, line_id))
             if not pattern_id:
                 pattern = Pattern.objects.create(
                     headsign=headsign,
                     direction=direction,
                     line=Line.objects.get(id=self.line_mapping[line_id]),
                 )
-                added_patterns[(headsign, direction, line_id)] = pattern.id
+                added_patterns[PatternData(headsign, direction, line_id)] = pattern.id
 
-                previous_departure = get_time_as_timedelta(stop_times[trip_id][0][2])
+                previous_departure = get_time_as_timedelta(stop_times[trip_id][0].departure)
                 for elem in stop_times[trip_id]:
-                    travel_time = get_time_as_timedelta(elem[2]) - previous_departure
+                    travel_time = get_time_as_timedelta(elem.departure) - previous_departure
                     PatternStop.objects.create(
                         pattern=pattern,
-                        stop=Stop.objects.get(id=self.stop_mapping[elem[0]]),
+                        stop=Stop.objects.get(id=self.stop_mapping[elem.stop_id]),
                         travel_time=travel_time,
-                        index=elem[1],
+                        index=elem.stop_seq,
                     )
             else:
                 pattern = Pattern.objects.get(id=pattern_id)
 
             Trip.objects.create(
                 wheelchair_accessible=wheelchair_accessible,
-                departure=get_time_as_timedelta(stop_times[trip_id][0][2]),
+                departure=get_time_as_timedelta(stop_times[trip_id][0].departure),
                 pattern=pattern,
                 calendar=Calendar.objects.get(id=self.calendar_mapping[service_id]),
             )
