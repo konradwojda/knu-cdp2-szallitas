@@ -5,10 +5,10 @@ from pathlib import Path
 
 from django.test import TestCase
 
-from .gtfs_tools import gtfs_import
-from .models import *
+from . import gtfs_import
+from ..models import *
 
-FIXTURES_DIR = Path(__file__).with_name("gtfs_tools") / "fixtures"
+FIXTURES_DIR = Path(__file__).with_name("fixtures")
 
 
 class GTFSImportTestCase(TestCase):
