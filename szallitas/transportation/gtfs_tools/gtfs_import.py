@@ -1,4 +1,5 @@
 import csv
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from io import TextIOWrapper
 from pathlib import Path
@@ -6,8 +7,6 @@ from typing import Iterable
 from zipfile import ZipFile
 
 from ..models import *
-
-from dataclasses import dataclass
 
 
 @dataclass
