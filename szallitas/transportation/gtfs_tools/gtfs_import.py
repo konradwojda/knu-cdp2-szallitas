@@ -12,7 +12,7 @@ from ..models import *
 @dataclass
 class Stoptime:
     stop_id: str
-    stop_seq: str
+    stop_seq: int
     departure: str
 
 
@@ -145,7 +145,7 @@ class GTFSLoader:
         for row in csv.DictReader(stop_times_fh):
             trip_id = row["trip_id"]
             stop_id = row["stop_id"]
-            stop_seq = row["stop_sequence"]
+            stop_seq = int(row["stop_sequence"])
             departure = row["departure_time"]
             if trip_id not in stop_times.keys():
                 stop_times[trip_id] = [Stoptime(stop_id, stop_seq, departure)]
@@ -153,7 +153,7 @@ class GTFSLoader:
                 stop_times[trip_id].append(Stoptime(stop_id, stop_seq, departure))
 
         for stop_time in stop_times.values():
-            stop_time.sort(key=lambda x: int(x.stop_seq))
+            stop_time.sort(key=lambda x: x.stop_seq)
 
         for row in csv.DictReader(trips_fh):
             line_id = row["route_id"]
