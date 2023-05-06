@@ -14,10 +14,30 @@ def seconds_to_gtfs_time(s: int) -> str:
 
 @dataclass(frozen=True)
 class FieldMapping:
+    """FieldMapping describes mapping from model fields into GTFS columns,
+    with the following parameters:
+
+    - model: name of Model class attribute
+    - gtfs: name of GTFS column
+    - fallback: string to use if Model attribute is None. Defaults to an empty string,
+      as str(None) == "None", which is not how None should be serialized into CSV.
+    - converter: if present, `str(converter(attr))` will be used
+      when saving a field into CSV. If None (default):
+      `str(attr) if attr is not None else fallback` is used.
+    """
+
     model: str
     gtfs: str
     fallback: str = ""
     converter: Callable[[Any], Any] | None = None
+
+    def serialize_attribute(self, attr: Any) -> Any:
+        # NOTE: csv.writer automatically calls str on the result
+
+        if self.converter:
+            return self.converter(attr)
+        else:
+            return attr if attr is not None else self.fallback
 
 
 class GTFSExporter:
@@ -28,13 +48,7 @@ class GTFSExporter:
         w = csv.writer(to)
         w.writerow(f.gtfs for f in fields)
         w.writerows(
-            (
-                f.converter(getattr(obj, f.model))
-                if f.converter
-                else (getattr(obj, f.model) or f.fallback)
-                for f in fields
-            )
-            for obj in objects
+            (f.serialize_attribute(getattr(obj, f.model)) for f in fields) for obj in objects
         )
 
     @staticmethod

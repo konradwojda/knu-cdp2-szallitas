@@ -1,3 +1,4 @@
+from datetime import date
 from io import StringIO
 
 from django.test import TestCase
@@ -16,6 +17,27 @@ class SecondsToGTFSTimeTestCase(TestCase):
         self.assertEqual(gtfs_export.seconds_to_gtfs_time(8 * 3600 + 15 * 60 + 30), "08:15:30")
         self.assertEqual(gtfs_export.seconds_to_gtfs_time(12 * 3600 + 5 * 60), "12:05:00")
         self.assertEqual(gtfs_export.seconds_to_gtfs_time(25 * 3600 + 48 * 60 + 20), "25:48:20")
+
+
+class FieldMappingTestCase(TestCase):
+    def test(self) -> None:
+        f = gtfs_export.FieldMapping(model="foo", gtfs="foo")
+        self.assertEqual(f.serialize_attribute(1), 1)
+        self.assertEqual(f.serialize_attribute("Hello, world"), "Hello, world")
+        self.assertEqual(f.serialize_attribute(None), "")
+
+    def test_fallback(self) -> None:
+        f = gtfs_export.FieldMapping(model="foo", gtfs="foo", fallback="UTC")
+        self.assertEqual(f.serialize_attribute("Europe/Warsaw"), "Europe/Warsaw")
+        self.assertEqual(f.serialize_attribute(None), "UTC")
+
+    def test_converter(self) -> None:
+        f = gtfs_export.FieldMapping(
+            model="foo",
+            gtfs="foo",
+            converter=lambda d: d.strftime("%Y%m%d"),
+        )
+        self.assertEqual(f.serialize_attribute(date(2023, 4, 1)), "20230401")
 
 
 class GTFSExportTestCase(TestCase):
