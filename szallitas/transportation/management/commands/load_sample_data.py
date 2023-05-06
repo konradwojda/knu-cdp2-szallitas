@@ -22,7 +22,7 @@ from ...models import (
 
 FIXTURE_SCHEDULES_FILE = Path(__file__).parent / "fixtures" / "schedules.json"
 
-FIXTURE_AGENCY = Agency(id=1, name="WKD", website="https://wkd.com.pl")
+FIXTURE_AGENCY = Agency(id=1, name="WKD", website="https://wkd.com.pl", timezone="Europe/Warsaw")
 
 FIXTURE_STOPS = {
     "wsrod": Stop(
@@ -341,29 +341,33 @@ def load_schedule_fixture() -> None:
 load_schedule_fixture()
 
 
+def load_wkd_fixture_database() -> None:
+    Trip.objects.all().delete()
+    PatternStop.objects.all().delete()
+    Pattern.objects.all().delete()
+    CalendarException.objects.all().delete()
+    Calendar.objects.all().delete()
+    Line.objects.all().delete()
+    Stop.objects.all().delete()
+    Agency.objects.all().delete()
+
+    FIXTURE_AGENCY.save()
+    for stop in FIXTURE_STOPS.values():
+        stop.save()
+    for line in FIXTURE_LINES.values():
+        line.save()
+    for calendar in FIXTURE_CALENDARS.values():
+        calendar.save()
+    for calendar_exception in FIXTURE_CALENDAR_EXCEPTIONS:
+        calendar_exception.save()
+    for pattern in FIXTURE_PATTERNS:
+        pattern.save()
+    for pattern_stop in FIXTURE_PATTERN_STOPS:
+        pattern_stop.save()
+    for trip in FIXTURE_TRIPS:
+        trip.save()
+
+
 class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> Optional[str]:
-        Trip.objects.all().delete()
-        PatternStop.objects.all().delete()
-        Pattern.objects.all().delete()
-        CalendarException.objects.all().delete()
-        Calendar.objects.all().delete()
-        Line.objects.all().delete()
-        Stop.objects.all().delete()
-        Agency.objects.all().delete()
-
-        FIXTURE_AGENCY.save()
-        for stop in FIXTURE_STOPS.values():
-            stop.save()
-        for line in FIXTURE_LINES.values():
-            line.save()
-        for calendar in FIXTURE_CALENDARS.values():
-            calendar.save()
-        for calendar_exception in FIXTURE_CALENDAR_EXCEPTIONS:
-            calendar_exception.save()
-        for pattern in FIXTURE_PATTERNS:
-            pattern.save()
-        for pattern_stop in FIXTURE_PATTERN_STOPS:
-            pattern_stop.save()
-        for trip in FIXTURE_TRIPS:
-            trip.save()
+        load_wkd_fixture_database()
