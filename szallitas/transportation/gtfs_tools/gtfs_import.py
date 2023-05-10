@@ -9,6 +9,10 @@ from zipfile import ZipFile
 from ..models import *
 
 
+class CalendarFileNotFound(Exception):
+    """Calendar file was not found in gtfs zip"""
+
+
 @dataclass
 class Stoptime:
     stop_id: str
@@ -39,18 +43,22 @@ class GTFSLoader:
 
     def from_zip(self, zip_path: str | Path) -> None:
         with ZipFile(zip_path, "r") as zip:
+            if "calendar.txt" not in zip.namelist() and "calendar_dates.txt" not in zip.namelist():
+                raise CalendarFileNotFound()
             with zip.open("agency.txt", "r") as stream:
                 self.import_agencies(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
             with zip.open("routes.txt", "r") as stream:
                 self.import_lines(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
             with zip.open("stops.txt", "r") as stream:
                 self.import_stops(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
-            with zip.open("calendar.txt", "r") as stream:
-                self.import_calendars(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
-            with zip.open("calendar_dates.txt", "r") as stream:
-                self.import_calendar_exceptions(
-                    TextIOWrapper(stream, encoding="utf-8-sig", newline="")
-                )
+            if "calendar.txt" in zip.namelist():
+                with zip.open("calendar.txt", "r") as stream:
+                    self.import_calendars(TextIOWrapper(stream, encoding="utf-8-sig", newline=""))
+            if "calendar_dates.txt" in zip.namelist():
+                with zip.open("calendar_dates.txt", "r") as stream:
+                    self.import_calendar_exceptions(
+                        TextIOWrapper(stream, encoding="utf-8-sig", newline="")
+                    )
             with zip.open("trips.txt", "r") as trips_stream, zip.open(
                 "stop_times.txt", "r"
             ) as stop_times_stream:
