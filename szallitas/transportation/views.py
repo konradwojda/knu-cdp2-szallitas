@@ -1,4 +1,4 @@
-from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from .models import Line, Pattern, PatternStop, Stop
@@ -11,13 +11,11 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def line(request: HttpRequest, line_id: int) -> HttpResponse:
+    line = get_object_or_404(Line, pk=line_id)
     patterns = Pattern.objects.filter(line__id=line_id)
-    if not patterns:
-        raise Http404("Pattern does not exist for line {}".format(line_id))
 
     context = {
-        "line_id": line_id,
-        "line": Line.objects.get(pk=line_id),
+        "line": line,
         "patterns": patterns,
     }
     return render(request, "transportation/line.html", context)
