@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models import Line, Pattern, PatternStop, Stop
+from .models import Line, Pattern, Stop
 from .timetable.tabular import generate_tabular_timetable
 
 
