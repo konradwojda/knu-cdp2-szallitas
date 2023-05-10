@@ -89,7 +89,8 @@ class GTFSLoader:
             name = row["stop_name"]
             lat = row["stop_lat"]
             lon = row["stop_lon"]
-            wheelchair_accessible = int(row.get("wheelchair_boarding", 0))
+            wheelchair_accessible = int(row.get("wheelchair_boarding") or 0)
+
             new_stop = Stop.objects.create(
                 name=name, code=code, lat=lat, lon=lon, wheelchair_accessible=wheelchair_accessible
             )
@@ -182,9 +183,7 @@ class GTFSLoader:
                 Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1].stop_id]).name,
             )
             direction = int(row["direction_id"]) if "direction_id" in row else None
-            wheelchair_accessible = (
-                int(row["wheelchair_accessible"]) if "wheelchair_accessible" in row else 0
-            )
+            wheelchair_accessible = int(row.get("wheelchair_accessible") or 0)
 
             pattern_stops: list[PatternStopData] = []
             trip_start_time = get_time_as_timedelta(stop_times[trip_id][0].departure)
