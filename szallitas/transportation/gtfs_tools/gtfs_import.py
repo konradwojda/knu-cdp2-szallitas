@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Iterable
 from zipfile import ZipFile
 
+from django.db import transaction
+
 from ..models import *
 
 
@@ -41,6 +43,7 @@ class GTFSLoader:
         self.line_mapping: dict[str, int] = dict()
         self.calendar_mapping: dict[str, int] = dict()
 
+    @transaction.atomic
     def from_zip(self, zip_path: str | Path) -> None:
         with ZipFile(zip_path, "r") as zip:
             if "calendar.txt" not in zip.namelist() and "calendar_dates.txt" not in zip.namelist():
