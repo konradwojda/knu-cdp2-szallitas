@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models import Line, Stop
+from .models import Line, Pattern, Stop
 from .timetable.tabular import generate_tabular_timetable
 
 
@@ -11,7 +11,13 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def line(request: HttpRequest, line_id: int) -> HttpResponse:
-    context = {"line_id": line_id}
+    line = get_object_or_404(Line, pk=line_id)
+    patterns = Pattern.objects.filter(line__id=line_id)
+
+    context = {
+        "line": line,
+        "patterns": patterns,
+    }
     return render(request, "transportation/line.html", context)
 
 
