@@ -291,10 +291,7 @@ a:hover {
     flex-wrap: wrap;
 }
 
-.line-container ul {
-    list-style: none;
-    width: 33.33%;
-    min-width: 200px;
-    padding: 0 10px;
+.line-container ol {
+    min-width: 20em;
     box-sizing: border-box;
 }

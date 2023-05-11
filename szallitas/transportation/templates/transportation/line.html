@@ -1,27 +1,20 @@
 {% extends "transportation/base.html" %}
-{% block headinsert %}
-<!-- leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-{% endblock %}
 
 {% load transportation_extras %}
 {% block title %}Szallitas - Line{% endblock %}
 {% block content %}
 
 <section class="stops_in_line">
-    <h1> Line {{line.line_type|line_emoji}} {{line.id}}. Select a stop </h1>
+    <h1> Line {{line.line_type|line_emoji}} {{line.code}}. Select a stop </h1>
 
     <div class="line-container">
         {% for pattern in patterns %}
-        <ul>
+        <ol>
             <h3>For {{pattern.headsign}}</h3>
             {% for pattern_stop in pattern.pattern_stop_set.all %}
-                <li><a href="/transportation/timetable/{{line.id}}/{{pattern_stop.stop_id}}">{{ pattern_stop.index|add:"1" }}. {{ pattern_stop.stop.name }}</a></li>
+                <li><a href="/transportation/timetable/{{line.id}}/{{pattern_stop.stop_id}}"> {{ pattern_stop.stop.name }} </a></li>
             {% endfor %}
-        </ul>
+        </ol>
         {% endfor %}
     </div>
 </section>
