@@ -286,12 +286,12 @@ a:hover {
  * LINES TEMPLATE *
  ****************/
 
- .line-container {
+.line-container {
     display: flex;
     flex-wrap: wrap;
 }
 
 .line-container ol {
-    min-width: 20em;
+    min-width: 12em;
     box-sizing: border-box;
 }
