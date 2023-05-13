@@ -32,7 +32,7 @@ class AgencyAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.Agency.objects.update_or_create(
+                models.Agency.objects.update_or_create(
                     name=fields[0],
                     website=fields[1],
                     timezone=fields[2],
@@ -72,7 +72,7 @@ class CalendarAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.Calendar.objects.update_or_create(
+                models.Calendar.objects.update_or_create(
                     name=fields[0],
                     start_date=fields[1],
                     end_date=fields[2],
@@ -117,7 +117,7 @@ class CalendarExceptionAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.CalendarException.objects.update_or_create(
+                models.CalendarException.objects.update_or_create(
                     day=fields[0],
                     added=fields[1],
                     calendar=fields[2],
@@ -155,7 +155,7 @@ class LineAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.Line.objects.update_or_create(
+                models.Line.objects.update_or_create(
                     code=fields[0],
                     description=fields[1],
                     line_type=fields[2],
@@ -194,7 +194,7 @@ class PatternAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.Pattern.objects.update_or_create(
+                models.Pattern.objects.update_or_create(
                     headsign=fields[0],
                     direction=fields[1],
                     line=fields[2],
@@ -233,7 +233,7 @@ class PatternStopAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.PatternStop.objects.update_or_create(
+                models.PatternStop.objects.update_or_create(
                     pattern=fields[0],
                     stop=fields[1],
                     travel_time=fields[2],
@@ -272,7 +272,7 @@ class StopAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.Stop.objects.update_or_create(
+                models.Stop.objects.update_or_create(
                     code=fields[0],
                     description=fields[1],
                     line_type=fields[2],
@@ -311,7 +311,7 @@ class TripAdmin(admin.ModelAdmin):
 
             for x in csv_data:
                 fields = x.split(",")
-                created = models.Trip.objects.update_or_create(
+                models.Trip.objects.update_or_create(
                     wheelchair_accessible=fields[0],
                     pattern=fields[1],
                     calendar=fields[2],
