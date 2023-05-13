@@ -1,11 +1,10 @@
-from django.contrib import admin
-from django.contrib import messages
+from django import forms
+from django.contrib import admin, messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import path
 
 from . import models
-from django.urls import path
-from django.shortcuts import redirect, render
-from django import forms
-from django.http import HttpResponseRedirect
 
 
 class CsvImportForm(forms.Form):
