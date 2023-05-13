@@ -5,8 +5,17 @@ from typing import Any, Optional
 
 from django.core.management.base import BaseCommand
 
-from ...models import (Agency, Calendar, CalendarException, Line, Pattern,
-                       PatternStop, Stop, Trip, WheelchairAccessibility)
+from ...models import (
+    Agency,
+    Calendar,
+    CalendarException,
+    Line,
+    Pattern,
+    PatternStop,
+    Stop,
+    Trip,
+    WheelchairAccessibility,
+)
 
 # Data based on https://mkuran.pl/gtfs/wkd.zip (feed_version=20230313)
 # Available under CC0-1.0 (public domain)

@@ -3,8 +3,7 @@ from typing import Any, Optional
 from django.core.management.base import BaseCommand, CommandParser
 
 from ...gtfs_tools.gtfs_import import GTFSLoader
-from ...models import (Agency, Calendar, CalendarException, Line, Pattern,
-                       PatternStop, Stop, Trip)
+from ...models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 
 
 class Command(BaseCommand):
