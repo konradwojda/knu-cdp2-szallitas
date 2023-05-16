@@ -164,7 +164,7 @@ class GTFSLoader:
         for row in csv.DictReader(stop_times_fh):
             pickup_type = row.get("pickup_type")
             drop_off_type = row.get("drop_off_type")
-            if pickup_type == "1" or drop_off_type == "1":
+            if pickup_type == "1" and drop_off_type == "1":
                 continue
             trip_id = row["trip_id"]
             stop_id = row["stop_id"]
