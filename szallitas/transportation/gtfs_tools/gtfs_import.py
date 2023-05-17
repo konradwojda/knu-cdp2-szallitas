@@ -162,6 +162,10 @@ class GTFSLoader:
         stop_times: dict[str, list[Stoptime]] = dict()
         added_patterns: dict[PatternData, int] = dict()
         for row in csv.DictReader(stop_times_fh):
+            pickup_type = row.get("pickup_type")
+            drop_off_type = row.get("drop_off_type")
+            if pickup_type == "1" and drop_off_type == "1":
+                continue
             trip_id = row["trip_id"]
             stop_id = row["stop_id"]
             stop_seq = int(row["stop_sequence"])
