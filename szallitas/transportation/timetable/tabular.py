@@ -8,6 +8,7 @@ CalendarName = str
 DepartureBoard = List[Tuple[Hour, Minutes]]
 DepartureBoardByCalendar = List[Tuple[CalendarName, DepartureBoard]]
 
+
 def generate_tabular_timetable(_pattern_stop: PatternStop) -> DepartureBoardByCalendar:
     timetable: DepartureBoardByCalendar = []
 
@@ -17,7 +18,9 @@ def generate_tabular_timetable(_pattern_stop: PatternStop) -> DepartureBoardByCa
         departure_time = trip.departure + _pattern_stop.travel_time
         departure_time += timedelta(days=1)
         departure_time = departure_time.total_seconds() % (24 * 3600)
-        departure_time = time(hour=int(departure_time // 3600), minute=int((departure_time // 60) % 60))
+        departure_time = time(
+            hour=int(departure_time // 3600), minute=int((departure_time // 60) % 60)
+        )
 
         calendar_name = trip.calendar.name
 
