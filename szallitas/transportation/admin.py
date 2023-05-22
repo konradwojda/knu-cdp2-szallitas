@@ -11,16 +11,17 @@ from . import models
 class CsvImportForm(forms.Form):
     zip_import = forms.FileField()
 
+
 class ImportAdmin(admin.ModelAdmin):
     list_display = ("filename", "created")
-    
+
     def get_urls(self):
         urls = super().get_urls()
         new_urls = [
             path("upload-zip/", self.upload_zip),
         ]
         return new_urls + urls
-    
+
     def upload_zip(self, request):
         if request.method == "POST":
             zip_file = request.FILES["zip_import"]
