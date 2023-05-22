@@ -1,5 +1,6 @@
-from datetime import timedelta, time
+from datetime import time, timedelta
 from typing import List, Tuple
+
 from ..models import PatternStop
 
 Hour = str
