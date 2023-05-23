@@ -16,20 +16,57 @@ class GenerateTabularTimetableTestCase(TestCase):
         # Check the calendars and their ordering
         tt = generate_tabular_timetable(ps)
         self.assertEqual(len(tt), 2)
+
         self.assertEqual(tt[0][0], "Mon-Fri")
+        self.assertListEqual(
+            tt[0][1],
+            [
+                ("04", ["50"]),
+                ("05", ["32"]),
+                ("06", ["22"]),
+                ("07", ["08"]),
+                ("08", ["20"]),
+                ("09", ["08"]),
+                ("10", ["00"]),
+                ("11", ["00"]),
+                ("12", ["00"]),
+                ("13", ["00"]),
+                ("14", ["09"]),
+                ("15", ["09"]),
+                ("16", ["09", "57"]),
+                ("17", ["57"]),
+                ("18", ["57", "57"]),
+                ("19", []),
+                ("20", ["47"]),
+                ("21", []),
+                ("22", ["00"]),
+                ("23", ["00"]),
+            ],
+        )
+
         self.assertEqual(tt[1][0], "Sat-Sun")
-
-        # Check the hour ranges
-        self.assertEqual(len(tt[0][1]), 20)
-        self.assertEqual(tt[0][1][0][0], "04")
-        self.assertEqual(tt[0][1][-1][0], "23")
-
-        self.assertEqual(len(tt[1][1]), 20)
-        self.assertEqual(tt[1][1][0][0], "04")
-        self.assertEqual(tt[1][1][-1][0], "23")
-
-        # Check generated minutes
-        self.assertListEqual(tt[0][1][0][1], ["50"])
-        self.assertListEqual(tt[0][1][12][1], ["09", "57"])
-        self.assertListEqual(tt[0][1][15][1], [])
-        self.assertListEqual(tt[0][1][-1][1], ["00"])
+        self.assertListEqual(
+            tt[1][1],
+            [
+                ("04", []),
+                ("05", ["12"]),
+                ("06", ["17"]),
+                ("07", ["02"]),
+                ("08", ["02"]),
+                ("09", ["02"]),
+                ("10", ["02"]),
+                ("11", ["02"]),
+                ("12", ["02"]),
+                ("13", ["02"]),
+                ("14", ["02"]),
+                ("15", ["02"]),
+                ("16", ["02"]),
+                ("17", ["02"]),
+                ("18", ["02"]),
+                ("19", ["02"]),
+                ("20", ["02"]),
+                ("21", ["02"]),
+                ("22", ["12"]),
+                ("23", ["12"]),
+            ],
+        )
