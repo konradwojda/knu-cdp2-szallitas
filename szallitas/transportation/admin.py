@@ -28,9 +28,10 @@ class TransportAdminSite(admin.AdminSite):
 
     def upload_zip(self, request: HttpRequest):
         if request.method == "POST":
-            zip_file: UploadedFile = request.FILES["zip_import"]
+            zip_file = UploadedFile(request.FILES["zip_import"])
+            zip_name = str(zip_file.name)
 
-            if not zip_file.name.endswith(".zip"):
+            if not zip_name.endswith(".zip"):
                 messages.warning(request, "The wrong file type was uploaded.")
                 return HttpResponseRedirect(request.path_info)
 
