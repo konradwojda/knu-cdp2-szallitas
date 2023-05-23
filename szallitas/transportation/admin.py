@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-
 from . import models
 
 
 class TransportAdminSite(admin.AdminSite):
     index_template = "admin/custom_index.html"
+
 
 class CustomUserAdmin(admin.ModelAdmin):
     # Set user permissions here
