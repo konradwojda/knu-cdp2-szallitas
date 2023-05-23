@@ -39,7 +39,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # "django.contrib.admin",
-    "transportation.apps.TransportAdminConfig", 
+    "transportation.apps.TransportAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

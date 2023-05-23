@@ -1,16 +1,17 @@
 from django import forms
 from django.contrib import admin, messages
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import path
 from transportation.gtfs_tools.gtfs_import import GTFSLoader
-from django.contrib.auth.models import User
 
 from . import models
 
 
 class CsvImportForm(forms.Form):
     zip_import = forms.FileField()
+
 
 class TransportAdminSite(admin.AdminSite):
     index_template = "admin/custom_index.html"
@@ -30,7 +31,7 @@ class TransportAdminSite(admin.AdminSite):
             if not zip_file.name.endswith(".zip"):
                 messages.warning(request, "The wrong file type was uploaded.")
                 return HttpResponseRedirect(request.path_info)
-            
+
             models.Trip.objects.all().delete()
             models.PatternStop.objects.all().delete()
             models.Pattern.objects.all().delete()
@@ -57,7 +58,8 @@ class TransportAdminSite(admin.AdminSite):
 class CustomUserAdmin(admin.ModelAdmin):
     # Set user permissions here
     pass
-    
+
+
 admin_site = TransportAdminSite(name="TransportAdminSite")
 
 
@@ -70,4 +72,3 @@ admin_site.register(models.Pattern)
 admin_site.register(models.PatternStop)
 admin_site.register(models.Stop)
 admin_site.register(models.Trip)
-    
