@@ -1,8 +1,10 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from transportation.gtfs_tools.gtfs_export import export_all
 
 from .models import Line, Pattern, Stop
 from .timetable.tabular import generate_tabular_timetable
+
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -49,3 +51,10 @@ def stops(request: HttpRequest) -> JsonResponse:
 
 def lines(request: HttpRequest) -> JsonResponse:
     return JsonResponse(list(Line.objects.all().values()), safe=False)
+
+def download(request: HttpRequest):
+    zipfile_name = "szallitas-gtfs.zip"
+    response = HttpResponse(content_type="application/zip")
+    export_all(response)
+    response['Content-Disposition'] = 'attachment; filename={}'.format(zipfile_name)
+    return response
