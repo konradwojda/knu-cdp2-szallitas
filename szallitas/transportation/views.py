@@ -1,10 +1,14 @@
+from django import forms
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.core.files.uploadedfile import UploadedFile
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from transportation.gtfs_tools.gtfs_export import export_all
+from transportation.gtfs_tools.gtfs_import import GTFSLoader
 
-from .models import Line, Pattern, Stop
+from .models import Line, Pattern, Stop, Trip, PatternStop, Calendar, CalendarException, Agency
 from .timetable.tabular import generate_tabular_timetable
 
 
@@ -62,3 +66,37 @@ def download(request: HttpRequest):
     export_all(response)
     response["Content-Disposition"] = "attachment; filename={}".format(zipfile_name)
     return response
+
+
+class CsvImportForm(forms.Form):
+    zip_import = forms.FileField()
+
+@login_required
+@staff_member_required
+def uploadzip(request: HttpRequest):
+    if request.method == "POST":
+            zip_file = UploadedFile(request.FILES["zip_import"])
+            zip_name = str(zip_file.name)
+
+            if not zip_name.endswith(".zip"):
+                messages.warning(request, "The wrong file type was uploaded.")
+                return HttpResponseRedirect(request.path_info)
+
+            Trip.objects.all().delete()
+            PatternStop.objects.all().delete()
+            Pattern.objects.all().delete()
+            CalendarException.objects.all().delete()
+            Calendar.objects.all().delete()
+            Line.objects.all().delete()
+            Stop.objects.all().delete()
+            Agency.objects.all().delete()
+
+            gtfs_loader = GTFSLoader()
+            gtfs_loader.from_zip(zip_file)
+
+            messages.success(request, "Your zip file has been uploaded")
+            return redirect('/admin/')
+    
+    form = CsvImportForm()
+    data = {"form": form}
+    return render(request, "admin/csv_upload.html", data)
