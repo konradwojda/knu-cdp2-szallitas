@@ -9,5 +9,5 @@ urlpatterns = [
     path("timetable/<int:line_id>/<int:stop_id>/", views.timetable, name="line_at_stop"),
     path("api/stops", views.stops, name="stops"),
     path("api/lines", views.lines, name="lines"),
-    path('download_gtfs/', views.download, name='download_gtfs'),
+    path("download_gtfs/", views.download, name="download_gtfs"),
 ]
