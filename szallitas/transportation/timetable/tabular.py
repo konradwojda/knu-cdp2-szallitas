@@ -15,9 +15,7 @@ def generate_tabular_timetable(pattern_stop: PatternStop) -> DepartureBoardByCal
 
     trips = pattern_stop.pattern.trip_set.all()
 
-    timetables: defaultdict[str, defaultdict[str, List[str]]] = defaultdict(
-        lambda: defaultdict(list)
-    )
+    timetables: defaultdict[str, List[Tuple[int, int]]] = defaultdict(list)
 
     for trip in trips:
         departure_time = trip.departure + pattern_stop.travel_time
@@ -26,12 +24,37 @@ def generate_tabular_timetable(pattern_stop: PatternStop) -> DepartureBoardByCal
 
         calendar_name = trip.calendar.name
 
-        hour = str(int(hours)).zfill(2)
-        minute = str(int(minutes)).zfill(2)
+        hour = int(hours)
+        minute = int(minutes)
 
-        timetables[calendar_name][hour].append(minute)
+        timetables[calendar_name].append((hour, minute))
 
     for calendar_name, timetable_board in timetables.items():
-        timetable.append((calendar_name, list(timetable_board.items())))
+        sorted_timetable = sorted(timetable_board, key=lambda x: x[0])
+
+        sorted_hours = [hour for hour, _ in sorted_timetable]
+        sorted_minutes = [minute for _, minute in sorted_timetable]
+
+        min_hour = min(sorted_hours)
+        max_hour = max(sorted_hours)
+        all_hours = list(range(min_hour, max_hour + 1))
+
+        grouped_minutes: List[List[int]] = [[] for _ in range(len(all_hours))]
+        for hour, minute in zip(sorted_hours, sorted_minutes):
+            index = all_hours.index(hour)
+            grouped_minutes[index].append(minute)
+
+        timetable.append(
+            (
+                calendar_name,
+                [
+                    (
+                        str(hour).zfill(2),
+                        [str(minute).zfill(2) for minute in minutes],
+                    )
+                    for hour, minutes in zip(all_hours, grouped_minutes)
+                ],
+            )
+        )
 
     return timetable
