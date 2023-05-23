@@ -1,3 +1,4 @@
+import traceback
 from typing import IO, cast
 from zipfile import BadZipFile
 
@@ -10,7 +11,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonRes
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .gtfs_tools.gtfs_export import export_all
-from .gtfs_tools.gtfs_import import GTFSLoader
+from .gtfs_tools.gtfs_import import CalendarFileNotFound, GTFSLoader
 from .models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 from .timetable.tabular import generate_tabular_timetable
 
@@ -95,6 +96,12 @@ def upload_zip(request: HttpRequest):
             gtfs_loader.from_zip(zip_file)
         except BadZipFile:
             messages.warning(request, "Bad file was uploaded.")
+            return HttpResponseRedirect(request.path_info)
+        except CalendarFileNotFound:
+            messages.warning(request, "Calendar file was not found.")
+            return HttpResponseRedirect(request.path_info)
+        except Exception:
+            messages.error(request, f"Exception occurred:{traceback.format_exc()}")
             return HttpResponseRedirect(request.path_info)
 
         messages.success(request, "Your zip file has been uploaded")
