@@ -1,7 +1,17 @@
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from typing import IO, cast
+from zipfile import BadZipFile
 
-from .models import Line, Pattern, Stop
+from django import forms
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import UploadedFile
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .gtfs_tools.gtfs_export import export_all
+from .gtfs_tools.gtfs_import import GTFSLoader
+from .models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 from .timetable.tabular import generate_tabular_timetable
 
 
@@ -49,3 +59,46 @@ def stops(request: HttpRequest) -> JsonResponse:
 
 def lines(request: HttpRequest) -> JsonResponse:
     return JsonResponse(list(Line.objects.all().values()), safe=False)
+
+
+@login_required
+@staff_member_required
+def download(request: HttpRequest):
+    zipfile_name = "szallitas-gtfs.zip"
+    response = HttpResponse(content_type="application/zip")
+    export_all(cast(IO[bytes], response))
+    response["Content-Disposition"] = "attachment; filename={}".format(zipfile_name)
+    return response
+
+
+class CsvImportForm(forms.Form):
+    zip_import = forms.FileField(label="")
+
+
+@login_required
+@staff_member_required
+def upload_zip(request: HttpRequest):
+    if request.method == "POST":
+        zip_file = cast(UploadedFile, request.FILES["zip_import"])
+
+        Trip.objects.all().delete()
+        PatternStop.objects.all().delete()
+        Pattern.objects.all().delete()
+        CalendarException.objects.all().delete()
+        Calendar.objects.all().delete()
+        Line.objects.all().delete()
+        Stop.objects.all().delete()
+        Agency.objects.all().delete()
+
+        gtfs_loader = GTFSLoader()
+        try:
+            gtfs_loader.from_zip(zip_file)
+        except BadZipFile:
+            messages.warning(request, "Bad file was uploaded.")
+            return HttpResponseRedirect(request.path_info)
+
+        messages.success(request, "Your zip file has been uploaded")
+        return redirect("/admin/")
+
+    form = CsvImportForm()
+    return render(request, "admin/zip_upload.html", {"form": form})
