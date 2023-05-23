@@ -10,5 +10,5 @@ urlpatterns = [
     path("api/stops", views.stops, name="stops"),
     path("api/lines", views.lines, name="lines"),
     path("download_gtfs/", views.download, name="download_gtfs"),
-    path("upload_zip/", views.uploadzip, name="upload_zip"),
+    path("upload_zip/", views.upload_zip, name="upload_zip"),
 ]

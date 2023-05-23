@@ -76,7 +76,7 @@ class CsvImportForm(forms.Form):
 
 @login_required
 @staff_member_required
-def uploadzip(request: HttpRequest):
+def upload_zip(request: HttpRequest):
     if request.method == "POST":
         zip_file = cast(UploadedFile, request.FILES["zip_import"])
 
