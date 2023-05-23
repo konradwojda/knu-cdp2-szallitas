@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin, messages
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import path
 from transportation.gtfs_tools.gtfs_import import GTFSLoader
@@ -23,7 +23,7 @@ class TransportAdminSite(admin.AdminSite):
         ]
         return new_urls + urls
 
-    def upload_zip(self, request):
+    def upload_zip(self, request: HttpRequest):
         if request.method == "POST":
             zip_file = request.FILES["zip_import"]
             zip_name = request.FILES["zip_import"].name
