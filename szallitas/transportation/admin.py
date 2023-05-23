@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import path
+from pathlib import Path
 from transportation.gtfs_tools.gtfs_import import GTFSLoader
 
 from . import models
@@ -25,8 +26,7 @@ class TransportAdminSite(admin.AdminSite):
 
     def upload_zip(self, request: HttpRequest):
         if request.method == "POST":
-            zip_file = request.FILES["zip_import"]
-            zip_name = request.FILES["zip_import"].name
+            zip_file: Path = request.FILES["zip_import"]
 
             if not zip_file.name.endswith(".zip"):
                 messages.warning(request, "The wrong file type was uploaded.")
@@ -43,8 +43,6 @@ class TransportAdminSite(admin.AdminSite):
 
             gtfs_loader = GTFSLoader()
             gtfs_loader.from_zip(zip_file)
-
-            models.Import.objects.update_or_create(filename=zip_name)
 
             messages.success(request, "Your zip file has been uploaded")
             return redirect("..")
