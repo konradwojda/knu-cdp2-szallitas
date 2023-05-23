@@ -3,6 +3,7 @@ from pathlib import Path
 from django import forms
 from django.contrib import admin, messages
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import path
@@ -27,7 +28,7 @@ class TransportAdminSite(admin.AdminSite):
 
     def upload_zip(self, request: HttpRequest):
         if request.method == "POST":
-            zip_file: Path = request.FILES["zip_import"]
+            zip_file: UploadedFile = request.FILES["zip_import"]
 
             if not zip_file.name.endswith(".zip"):
                 messages.warning(request, "The wrong file type was uploaded.")
