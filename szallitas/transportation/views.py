@@ -1,3 +1,5 @@
+from typing import IO, cast
+
 from django import forms
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -63,7 +65,7 @@ def lines(request: HttpRequest) -> JsonResponse:
 def download(request: HttpRequest):
     zipfile_name = "szallitas-gtfs.zip"
     response = HttpResponse(content_type="application/zip")
-    export_all(response)
+    export_all(cast(IO[bytes], response))
     response["Content-Disposition"] = "attachment; filename={}".format(zipfile_name)
     return response
 
@@ -76,10 +78,9 @@ class CsvImportForm(forms.Form):
 @staff_member_required
 def uploadzip(request: HttpRequest):
     if request.method == "POST":
-        zip_file = UploadedFile(request.FILES["zip_import"])
-        zip_name = str(zip_file.name)
+        zip_file = cast(UploadedFile, request.FILES["zip_import"])
 
-        if not zip_name.endswith(".zip"):
+        if not zip_file.name.endswith(".zip"):
             messages.warning(request, "The wrong file type was uploaded.")
             return HttpResponseRedirect(request.path_info)
 

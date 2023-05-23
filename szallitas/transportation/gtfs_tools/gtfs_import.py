@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Iterable
+from typing import IO, Iterable
 from zipfile import ZipFile
 
 from django.db import transaction
@@ -44,7 +44,7 @@ class GTFSLoader:
         self.calendar_mapping: dict[str, int] = dict()
 
     @transaction.atomic
-    def from_zip(self, zip_path: str | Path) -> None:
+    def from_zip(self, zip_path: str | Path | IO[bytes]) -> None:
         with ZipFile(zip_path, "r") as zip:
             if "calendar.txt" not in zip.namelist() and "calendar_dates.txt" not in zip.namelist():
                 raise CalendarFileNotFound()
