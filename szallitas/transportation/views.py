@@ -71,7 +71,7 @@ def download(request: HttpRequest):
 
 
 class CsvImportForm(forms.Form):
-    zip_import = forms.FileField()
+    zip_import = forms.FileField(label="")
 
 
 @login_required
