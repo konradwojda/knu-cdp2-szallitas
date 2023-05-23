@@ -1,4 +1,5 @@
 from typing import IO, cast
+from zipfile import BadZipFile
 
 from django import forms
 from django.contrib import messages
@@ -80,10 +81,6 @@ def upload_zip(request: HttpRequest):
     if request.method == "POST":
         zip_file = cast(UploadedFile, request.FILES["zip_import"])
 
-        if not zip_file.name.endswith(".zip"):
-            messages.warning(request, "The wrong file type was uploaded.")
-            return HttpResponseRedirect(request.path_info)
-
         Trip.objects.all().delete()
         PatternStop.objects.all().delete()
         Pattern.objects.all().delete()
@@ -94,7 +91,11 @@ def upload_zip(request: HttpRequest):
         Agency.objects.all().delete()
 
         gtfs_loader = GTFSLoader()
-        gtfs_loader.from_zip(zip_file)
+        try:
+            gtfs_loader.from_zip(zip_file)
+        except BadZipFile:
+            messages.warning(request, "Bad file was uploaded.")
+            return HttpResponseRedirect(request.path_info)
 
         messages.success(request, "Your zip file has been uploaded")
         return redirect("/admin/")
