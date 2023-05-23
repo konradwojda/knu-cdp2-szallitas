@@ -100,5 +100,4 @@ def upload_zip(request: HttpRequest):
         return redirect("/admin/")
 
     form = CsvImportForm()
-    data = {"form": form}
-    return render(request, "admin/csv_upload.html", data)
+    return render(request, "admin/zip_upload.html", {"form": form})
