@@ -1,10 +1,11 @@
+from pathlib import Path
+
 from django import forms
 from django.contrib import admin, messages
 from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import path
-from pathlib import Path
 from transportation.gtfs_tools.gtfs_import import GTFSLoader
 
 from . import models
