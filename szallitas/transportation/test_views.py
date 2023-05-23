@@ -24,9 +24,9 @@ class UploadZIPTestCase(TestCase):
             file = SimpleUploadedFile("lomianki.zip", content=zip.read())
             request = self._factory.post("/transportation/upload_zip", data={"zip_import": file})
             request.user = self._user
-            setattr(request, 'session', 'session')
+            setattr(request, "session", "session")
             messages = FallbackStorage(request)
-            setattr(request, '_messages', messages)
+            setattr(request, "_messages", messages)
             upload_zip(request)
 
         self.assertEqual(Agency.objects.count(), 1)
@@ -42,9 +42,9 @@ class UploadZIPTestCase(TestCase):
         file = SimpleUploadedFile("lomianki.zip", content=b"abcd")
         request = self._factory.post("/transportation/upload_zip", data={"zip_import": file})
         request.user = self._user
-        setattr(request, 'session', 'session')
+        setattr(request, "session", "session")
         messages = FallbackStorage(request)
-        setattr(request, '_messages', messages)
+        setattr(request, "_messages", messages)
         upload_zip(request)
 
         self.assertEqual(Agency.objects.count(), 0)
