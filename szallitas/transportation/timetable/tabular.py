@@ -1,47 +1,37 @@
-from datetime import time, timedelta
 from typing import List, Tuple
+from collections import defaultdict
 
 from ..models import PatternStop
 
 Hour = str
-Minutes = List[str]
+Minutes = list[str]
 CalendarName = str
-DepartureBoard = List[Tuple[Hour, Minutes]]
-DepartureBoardByCalendar = List[Tuple[CalendarName, DepartureBoard]]
+DepartureBoard = list[tuple[Hour, Minutes]]
+DepartureBoardByCalendar = list[tuple[CalendarName, DepartureBoard]]
 
 
-def generate_tabular_timetable(_pattern_stop: PatternStop) -> DepartureBoardByCalendar:
+def generate_tabular_timetable(pattern_stop: PatternStop) -> DepartureBoardByCalendar:
     timetable: DepartureBoardByCalendar = []
 
-    trips = _pattern_stop.pattern.trip_set.all()
+    trips = pattern_stop.pattern.trip_set.all()
+
+    timetables: defaultdict[str, defaultdict[str, List[str]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
 
     for trip in trips:
-        departure_time = trip.departure + _pattern_stop.travel_time
-        departure_time += timedelta(days=1)
-        departure_time = departure_time.total_seconds() % (24 * 3600)
-        departure_time = time(
-            hour=int(departure_time // 3600), minute=int((departure_time // 60) % 60)
-        )
+        departure_time = trip.departure + pattern_stop.travel_time
+        hours, remainder = divmod(departure_time.total_seconds(), 3600)
+        minutes, _ = divmod(remainder, 60)
 
         calendar_name = trip.calendar.name
 
-        departure_board: DepartureBoard = []
-        for entry in timetable:
-            if entry[0] == calendar_name:
-                departure_board = entry[1]
-                break
+        hour = str(int(hours)).zfill(2)
+        minute = str(int(minutes)).zfill(2)
 
-        if not departure_board:
-            timetable.append((calendar_name, departure_board))
+        timetables[calendar_name][hour].append(minute)
 
-        hour = str(departure_time.hour).zfill(2)
-        minutes = str(departure_time.minute).zfill(2)
-
-        for entry in departure_board:
-            if entry[0] == hour:
-                entry[1].append(minutes)
-                break
-        else:
-            departure_board.append((hour, [minutes]))
+    for calendar_name, timetable_board in timetables.items():
+        timetable.append((calendar_name, list(timetable_board.items())))
 
     return timetable
