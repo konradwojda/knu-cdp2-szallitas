@@ -7,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from transportation.gtfs_tools.gtfs_export import export_all
-from transportation.gtfs_tools.gtfs_import import GTFSLoader
 
+from .gtfs_tools.gtfs_export import export_all
+from .gtfs_tools.gtfs_import import GTFSLoader
 from .models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 from .timetable.tabular import generate_tabular_timetable
 
