@@ -8,15 +8,10 @@ class TransportAdminSite(admin.AdminSite):
     index_template = "admin/custom_index.html"
 
 
-class CustomUserAdmin(admin.ModelAdmin):
-    # Set user permissions here
-    pass
-
-
 admin_site = TransportAdminSite(name="TransportAdminSite")
 
 
-admin_site.register(User, CustomUserAdmin)
+admin_site.register(User, admin.ModelAdmin)
 admin_site.register(models.Agency)
 admin_site.register(models.Calendar)
 admin_site.register(models.CalendarException)
