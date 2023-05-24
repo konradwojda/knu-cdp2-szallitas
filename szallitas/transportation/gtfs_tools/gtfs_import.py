@@ -182,9 +182,9 @@ class GTFSLoader:
             line_id = row["route_id"]
             service_id = row["service_id"]
             trip_id = row["trip_id"]
-            headsign = row.get(
-                "trip_headsign",
-                Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1].stop_id]).name,
+            headsign = (
+                row.get("trip_headsign")
+                or Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1].stop_id]).name
             )
             direction = int(row["direction_id"]) if "direction_id" in row else None
             wheelchair_accessible = int(row.get("wheelchair_accessible") or 0)
