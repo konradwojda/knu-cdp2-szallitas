@@ -1,8 +1,10 @@
 import traceback
+from collections import defaultdict
 from typing import IO, cast
 from zipfile import BadZipFile
 
 from django import forms
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
@@ -13,7 +15,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .gtfs_tools.gtfs_export import export_all
 from .gtfs_tools.gtfs_import import CalendarFileNotFound, GTFSLoader
 from .models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
-from .timetable.tabular import generate_tabular_timetable
+from .timetable.tabular import DepartureBoardByCalendar, generate_tabular_timetable
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -43,14 +45,30 @@ def timetable(request: HttpRequest, line_id: int, stop_id: int) -> HttpResponse:
     # FIXME: What if pattern stops multiple times at the stop?
     line = get_object_or_404(Line, pk=line_id)
     stop = get_object_or_404(Stop, pk=stop_id)
-    timetable_by_pattern = [
-        (pattern, generate_tabular_timetable(pattern_stop))
-        for pattern in line.pattern_set.all()
-        # Skip patterns not stopping at the requested stop
-        if (pattern_stop := pattern.pattern_stop_set.filter(stop_id=stop_id).first())
-    ]
 
-    context = {"line": line, "stop": stop, "timetable_by_pattern": timetable_by_pattern}
+    timetable_by_header: list[tuple[str, DepartureBoardByCalendar]]
+
+    if getattr(settings, "MERGE_TIMETABLES_BY_HEADSIGN", False):
+        # FIXME: What if there are the same headsigns in two different directions?
+        ps_by_headsign: defaultdict[str, list[PatternStop]] = defaultdict(list)
+        for pattern in line.pattern_set.all():
+            for ps in pattern.pattern_stop_set.filter(stop_id=stop_id).all():
+                ps_by_headsign[pattern.headsign].append(ps)
+
+        timetable_by_header = [
+            (header, generate_tabular_timetable(*pattern_stops))
+            for header, pattern_stops in ps_by_headsign.items()
+        ]
+
+    else:
+        timetable_by_header = [
+            (pattern.headsign, generate_tabular_timetable(pattern_stop))
+            for pattern in line.pattern_set.all()
+            # Skip patterns not stopping at the requested stop
+            if (pattern_stop := pattern.pattern_stop_set.filter(stop_id=stop_id).first())
+        ]
+
+    context = {"line": line, "stop": stop, "timetable_by_header": timetable_by_header}
     return render(request, "transportation/timetable.html", context)
 
 

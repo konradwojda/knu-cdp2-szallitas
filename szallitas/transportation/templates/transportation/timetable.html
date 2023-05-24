@@ -8,10 +8,10 @@
         at stop
         <a href="/transportation/stop/{{stop.id}}">{{stop.name}}</a>
     </h3>
-    {% for pattern, timetables in timetable_by_pattern %}
+    {% for header, timetables in timetable_by_header %}
     <div>
         <!-- FIXME: What if pattern doesn't have a headsign? -->
-        <h4>for {{pattern.headsign}}</h4>
+        <h4>for {{header}}</h4>
         <div class="timetables">
             {% for calendar_name, deps_by_hours in timetables %}
             <table>
