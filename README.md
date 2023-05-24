@@ -22,10 +22,11 @@ cd szallitas
 ./manage.py runserver 8888
 ```
 
+Instead of load_sample_data you can use `./manage.py import_gtfs` or django admin panel to load your GTFS file. You can also use example GTFS in fixtures folder.
+
 ## Django Admin
 You can access Django Admin site at `/admin/` and use previously set up creditentials to log in.  
-There you can manage your models.  
-You can also run `./manage.py shell` to run interactive interpreter.  
+There you can manage your models and import/export GTFS models.
 
 ## Tests
 Simply run tests by `./manage.py test`
