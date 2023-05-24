@@ -44,6 +44,11 @@ a:hover {
     box-sizing: border-box;
 }
 
+.ui-state-hover {
+    background: var(--color-accent-bg)!important;
+    color: var(--color-accent-fg)!important;
+}
+
 /**********
  * HEADER *
  **********/
