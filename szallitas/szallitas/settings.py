@@ -130,3 +130,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+MERGE_TIMETABLES_BY_HEADSIGN = True
