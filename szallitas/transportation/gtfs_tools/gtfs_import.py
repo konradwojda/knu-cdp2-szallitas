@@ -209,13 +209,15 @@ class GTFSLoader:
                 pattern_id = pattern.id
                 added_patterns[pattern_data] = pattern.id
 
-                for idx, pattern_stop in enumerate(pattern_stops):
-                    PatternStop.objects.create(
-                        pattern=pattern,
+                PatternStop.objects.bulk_create(
+                    PatternStop(
+                        pattern_id=pattern.id,
                         stop_id=self.stop_mapping[pattern_stop.stop_id],
                         travel_time=pattern_stop.travel_time,
                         index=idx,
                     )
+                    for idx, pattern_stop in enumerate(pattern_stops)
+                )
 
             Trip.objects.create(
                 wheelchair_accessible=wheelchair_accessible,
