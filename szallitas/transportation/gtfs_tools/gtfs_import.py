@@ -103,9 +103,11 @@ class GTFSLoader:
             description = row["route_long_name"]
             line_type = int(row["route_type"])
             agency_id = row["agency_id"]
-            agency = Agency.objects.get(id=self.agency_mapping[agency_id])
             new_line = Line.objects.create(
-                code=code, description=description, line_type=line_type, agency=agency
+                code=code,
+                description=description,
+                line_type=line_type,
+                agency_id=self.agency_mapping[agency_id],
             )
             self.line_mapping[line_id] = new_line.id
 
@@ -154,9 +156,10 @@ class GTFSLoader:
                     sunday=0,
                 )
                 self.calendar_mapping[service_id] = calendar.id
+                calendar_id = calendar.id
             else:
-                calendar = Calendar.objects.get(id=self.calendar_mapping[service_id])
-            CalendarException.objects.create(day=day, added=added, calendar=calendar)
+                calendar_id = self.calendar_mapping[service_id]
+            CalendarException.objects.create(day=day, added=added, calendar_id=calendar_id)
 
     def import_patterns(self, trips_fh: Iterable[str], stop_times_fh: Iterable[str]) -> None:
         stop_times: dict[str, list[Stoptime]] = dict()
@@ -201,25 +204,24 @@ class GTFSLoader:
                 pattern = Pattern.objects.create(
                     headsign=headsign,
                     direction=direction,
-                    line=Line.objects.get(id=self.line_mapping[line_id]),
+                    line_id=self.line_mapping[line_id],
                 )
+                pattern_id = pattern.id
                 added_patterns[pattern_data] = pattern.id
 
                 for idx, pattern_stop in enumerate(pattern_stops):
                     PatternStop.objects.create(
                         pattern=pattern,
-                        stop=Stop.objects.get(id=self.stop_mapping[pattern_stop.stop_id]),
+                        stop_id=self.stop_mapping[pattern_stop.stop_id],
                         travel_time=pattern_stop.travel_time,
                         index=idx,
                     )
-            else:
-                pattern = Pattern.objects.get(id=pattern_id)
 
             Trip.objects.create(
                 wheelchair_accessible=wheelchair_accessible,
                 departure=get_time_as_timedelta(stop_times[trip_id][0].departure),
-                pattern=pattern,
-                calendar=Calendar.objects.get(id=self.calendar_mapping[service_id]),
+                pattern_id=pattern_id,
+                calendar_id=self.calendar_mapping[service_id],
             )
 
 
