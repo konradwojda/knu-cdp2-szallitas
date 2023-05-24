@@ -8,7 +8,7 @@ from zipfile import ZipFile
 
 from django.db import transaction
 
-from ..models import *
+from ..models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 
 
 class CalendarFileNotFound(Exception):
