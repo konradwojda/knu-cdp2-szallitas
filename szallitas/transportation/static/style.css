@@ -297,5 +297,5 @@ a:hover {
 }
 
 .line-container ol {
-    min-width: 12em;
+    min-width: fit-content;
 }
