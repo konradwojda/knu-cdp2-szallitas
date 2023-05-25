@@ -219,12 +219,17 @@ class GTFSLoader:
                     for idx, pattern_stop in enumerate(pattern_stops)
                 )
 
-            Trip.objects.create(
-                wheelchair_accessible=wheelchair_accessible,
-                departure=get_time_as_timedelta(stop_times[trip_id][0].departure),
-                pattern_id=pattern_id,
-                calendar_id=self.calendar_mapping[service_id],
-            )
+
+def clear_tables() -> None:
+    cur = connection.cursor()
+    cur.execute('DELETE FROM "transportation_trip";')
+    cur.execute('DELETE FROM "transportation_patternstop";')
+    cur.execute('DELETE FROM "transportation_pattern";')
+    cur.execute('DELETE FROM "transportation_calendarexception";')
+    cur.execute('DELETE FROM "transportation_calendar";')
+    cur.execute('DELETE FROM "transportation_line";')
+    cur.execute('DELETE FROM "transportation_stop";')
+    cur.execute('DELETE FROM "transportation_agency";')
 
 
 def get_time_as_timedelta(time_str: str) -> timedelta:
