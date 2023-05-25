@@ -13,7 +13,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonRes
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .gtfs_tools.gtfs_export import export_all
-from .gtfs_tools.gtfs_import import CalendarFileNotFound, GTFSLoader
+from .gtfs_tools.gtfs_import import CalendarFileNotFound, GTFSLoader, clear_tables
 from .models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 from .timetable.tabular import DepartureBoardByCalendar, generate_tabular_timetable
 
@@ -100,14 +100,7 @@ def upload_zip(request: HttpRequest):
     if request.method == "POST":
         zip_file = cast(UploadedFile, request.FILES["zip_import"])
 
-        Trip.objects.all().delete()
-        PatternStop.objects.all().delete()
-        Pattern.objects.all().delete()
-        CalendarException.objects.all().delete()
-        Calendar.objects.all().delete()
-        Line.objects.all().delete()
-        Stop.objects.all().delete()
-        Agency.objects.all().delete()
+        clear_tables()
 
         gtfs_loader = GTFSLoader()
         try:

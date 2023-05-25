@@ -2,13 +2,15 @@ import csv
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from io import TextIOWrapper
+from itertools import islice
 from pathlib import Path
-from typing import IO, Iterable
+from typing import IO, Final, Iterable, Mapping
 from zipfile import ZipFile
 
-from django.db import transaction
+from django.db import connection, transaction
+from django.db.models import Max
 
-from ..models import *
+from ..models import Agency, Calendar, CalendarException, Line, Pattern, PatternStop, Stop, Trip
 
 
 class CalendarFileNotFound(Exception):
@@ -37,11 +39,28 @@ class PatternData:
 
 
 class GTFSLoader:
+    BATCH_SIZE: Final[int] = 999
+    # According to https://docs.djangoproject.com/en/4.2/ref/models/querysets/#bulk-create
+    # sqlite can handle at most 999 rows inserted at one time.
+
     def __init__(self):
         self.agency_mapping: dict[str, int] = dict()
         self.stop_mapping: dict[str, int] = dict()
         self.line_mapping: dict[str, int] = dict()
         self.calendar_mapping: dict[str, int] = dict()
+        self.stop_times: dict[str, list[Stoptime]] = {}
+        self.pattern_ids: dict[PatternData, int] = {}
+
+        # Temporary caches for bulk-insertion of trips
+        self.patterns_to_add: list[Pattern] = []
+        self.pattern_data_to_add: list[tuple[int, PatternData]] = []
+        self.trips_to_add: list[Trip] = []
+
+        # Counters for generating Pattern IDs. These need to be eagerly generated
+        # for PatternStop insertion. Otherwise, after a Pattern has been inserted,
+        # and before its PatternStops are inserted; a fetch to the database for the ID
+        # would need to be performed.
+        self.pattern_id_counter: int = (Pattern.objects.aggregate(Max("id"))["id__max"] or 0) + 1
 
     @transaction.atomic
     def from_zip(self, zip_path: str | Path | IO[bytes]) -> None:
@@ -103,9 +122,11 @@ class GTFSLoader:
             description = row["route_long_name"]
             line_type = int(row["route_type"])
             agency_id = row["agency_id"]
-            agency = Agency.objects.get(id=self.agency_mapping[agency_id])
             new_line = Line.objects.create(
-                code=code, description=description, line_type=line_type, agency=agency
+                code=code,
+                description=description,
+                line_type=line_type,
+                agency_id=self.agency_mapping[agency_id],
             )
             self.line_mapping[line_id] = new_line.id
 
@@ -154,13 +175,13 @@ class GTFSLoader:
                     sunday=0,
                 )
                 self.calendar_mapping[service_id] = calendar.id
+                calendar_id = calendar.id
             else:
-                calendar = Calendar.objects.get(id=self.calendar_mapping[service_id])
-            CalendarException.objects.create(day=day, added=added, calendar=calendar)
+                calendar_id = self.calendar_mapping[service_id]
+            CalendarException.objects.create(day=day, added=added, calendar_id=calendar_id)
 
-    def import_patterns(self, trips_fh: Iterable[str], stop_times_fh: Iterable[str]) -> None:
-        stop_times: dict[str, list[Stoptime]] = dict()
-        added_patterns: dict[PatternData, int] = dict()
+    def load_stop_times(self, stop_times_fh: Iterable[str]) -> None:
+        self.stop_times.clear()
         for row in csv.DictReader(stop_times_fh):
             pickup_type = row.get("pickup_type")
             drop_off_type = row.get("drop_off_type")
@@ -170,57 +191,95 @@ class GTFSLoader:
             stop_id = row["stop_id"]
             stop_seq = int(row["stop_sequence"])
             departure = row["departure_time"]
-            if trip_id not in stop_times.keys():
-                stop_times[trip_id] = [Stoptime(stop_id, stop_seq, departure)]
+            if trip_id not in self.stop_times:
+                self.stop_times[trip_id] = [Stoptime(stop_id, stop_seq, departure)]
             else:
-                stop_times[trip_id].append(Stoptime(stop_id, stop_seq, departure))
+                self.stop_times[trip_id].append(Stoptime(stop_id, stop_seq, departure))
 
-        for stop_time in stop_times.values():
+        for stop_time in self.stop_times.values():
             stop_time.sort(key=lambda x: x.stop_seq)
 
-        for row in csv.DictReader(trips_fh):
-            line_id = row["route_id"]
-            service_id = row["service_id"]
-            trip_id = row["trip_id"]
-            headsign = row.get(
-                "trip_headsign",
-                Stop.objects.get(id=self.stop_mapping[stop_times[trip_id][-1].stop_id]).name,
-            )
-            direction = int(row["direction_id"]) if "direction_id" in row else None
-            wheelchair_accessible = int(row.get("wheelchair_accessible") or 0)
+    def load_trip(self, row: Mapping[str, str]) -> None:
+        line_id = row["route_id"]
+        service_id = row["service_id"]
+        trip_id = row["trip_id"]
+        headsign = (
+            row.get("trip_headsign")
+            or Stop.objects.get(id=self.stop_mapping[self.stop_times[trip_id][-1].stop_id]).name
+        )
+        direction = int(row["direction_id"]) if "direction_id" in row else None
+        wheelchair_accessible = int(row.get("wheelchair_accessible") or 0)
 
-            pattern_stops: list[PatternStopData] = []
-            trip_start_time = get_time_as_timedelta(stop_times[trip_id][0].departure)
-            for elem in stop_times[trip_id]:
-                travel_time = get_time_as_timedelta(elem.departure) - trip_start_time
-                pattern_stops.append(PatternStopData(elem.stop_id, travel_time))
+        pattern_stops: list[PatternStopData] = []
+        trip_start_time = get_time_as_timedelta(self.stop_times[trip_id][0].departure)
+        for elem in self.stop_times[trip_id]:
+            travel_time = get_time_as_timedelta(elem.departure) - trip_start_time
+            pattern_stops.append(PatternStopData(elem.stop_id, travel_time))
 
-            pattern_data = PatternData(headsign, direction, line_id, tuple(pattern_stops))
-            pattern_id = added_patterns.get(pattern_data)
-            if not pattern_id:
-                pattern = Pattern.objects.create(
+        pattern_data = PatternData(headsign, direction, line_id, tuple(pattern_stops))
+        pattern_id = self.pattern_ids.get(pattern_data)
+        if not pattern_id:
+            pattern_id = self.pattern_id_counter
+            self.pattern_id_counter += 1
+
+            self.pattern_ids[pattern_data] = pattern_id
+            self.patterns_to_add.append(
+                Pattern(
+                    id=pattern_id,
                     headsign=headsign,
                     direction=direction,
-                    line=Line.objects.get(id=self.line_mapping[line_id]),
+                    line_id=self.line_mapping[line_id],
                 )
-                added_patterns[pattern_data] = pattern.id
-
-                for idx, pattern_stop in enumerate(pattern_stops):
-                    PatternStop.objects.create(
-                        pattern=pattern,
-                        stop=Stop.objects.get(id=self.stop_mapping[pattern_stop.stop_id]),
-                        travel_time=pattern_stop.travel_time,
-                        index=idx,
-                    )
-            else:
-                pattern = Pattern.objects.get(id=pattern_id)
-
-            Trip.objects.create(
-                wheelchair_accessible=wheelchair_accessible,
-                departure=get_time_as_timedelta(stop_times[trip_id][0].departure),
-                pattern=pattern,
-                calendar=Calendar.objects.get(id=self.calendar_mapping[service_id]),
             )
+            self.pattern_data_to_add.append((pattern_id, pattern_data))
+
+        self.trips_to_add.append(
+            Trip(
+                wheelchair_accessible=wheelchair_accessible,
+                departure=get_time_as_timedelta(self.stop_times[trip_id][0].departure),
+                pattern_id=pattern_id,
+                calendar_id=self.calendar_mapping[service_id],
+            )
+        )
+
+    def insert_current_batch(self) -> None:
+        Pattern.objects.bulk_create(self.patterns_to_add)
+        Trip.objects.bulk_create(self.trips_to_add)
+        PatternStop.objects.bulk_create(
+            PatternStop(
+                pattern_id=pattern_id,
+                stop_id=self.stop_mapping[pattern_stop.stop_id],
+                travel_time=pattern_stop.travel_time,
+                index=idx,
+            )
+            for pattern_id, pattern_data in self.pattern_data_to_add
+            for idx, pattern_stop in enumerate(pattern_data.stops)
+        )
+
+        self.patterns_to_add.clear()
+        self.pattern_data_to_add.clear()
+        self.trips_to_add.clear()
+
+    def import_patterns(self, trips_fh: Iterable[str], stop_times_fh: Iterable[str]) -> None:
+        self.load_stop_times(stop_times_fh)
+
+        trips = csv.DictReader(trips_fh)
+        while batch := list(islice(trips, self.BATCH_SIZE)):
+            for trip in batch:
+                self.load_trip(trip)
+            self.insert_current_batch()
+
+
+def clear_tables() -> None:
+    cur = connection.cursor()
+    cur.execute('DELETE FROM "transportation_trip";')
+    cur.execute('DELETE FROM "transportation_patternstop";')
+    cur.execute('DELETE FROM "transportation_pattern";')
+    cur.execute('DELETE FROM "transportation_calendarexception";')
+    cur.execute('DELETE FROM "transportation_calendar";')
+    cur.execute('DELETE FROM "transportation_line";')
+    cur.execute('DELETE FROM "transportation_stop";')
+    cur.execute('DELETE FROM "transportation_agency";')
 
 
 def get_time_as_timedelta(time_str: str) -> timedelta:

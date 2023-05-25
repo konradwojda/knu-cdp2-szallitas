@@ -5,6 +5,7 @@ from typing import Any, Optional
 
 from django.core.management.base import BaseCommand
 
+from ...gtfs_tools.gtfs_import import clear_tables
 from ...models import (
     Agency,
     Calendar,
@@ -342,14 +343,7 @@ load_schedule_fixture()
 
 
 def load_wkd_fixture_database() -> None:
-    Trip.objects.all().delete()
-    PatternStop.objects.all().delete()
-    Pattern.objects.all().delete()
-    CalendarException.objects.all().delete()
-    Calendar.objects.all().delete()
-    Line.objects.all().delete()
-    Stop.objects.all().delete()
-    Agency.objects.all().delete()
+    clear_tables()
 
     FIXTURE_AGENCY.save()
     for stop in FIXTURE_STOPS.values():
