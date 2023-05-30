@@ -32,7 +32,7 @@ body {
 }
 
 a {
-    color: var(--color-accent-fg);
+    color: var(--color-fg);
     text-decoration: none;
 }
 
@@ -71,6 +71,10 @@ a:hover {
     margin: auto 0;
     font-size: 2rem;
     font-weight: 700;
+}
+
+.nav-logo>a {
+    color: var(--color-accent-fg);
 }
 
 .nav-logo>a:hover {
@@ -240,10 +244,6 @@ a:hover {
 
 .available_lines li {
     padding-bottom: 1.2em;
-}
-
-.available_lines li a {
-    text-decoration: none;
 }
 
 .lines_in_stop {
