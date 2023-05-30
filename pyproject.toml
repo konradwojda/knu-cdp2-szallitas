@@ -22,6 +22,7 @@ profile = "black"
 line_length = 99
 
 [tool.pyright]
+exclude = [".venv", "szallitas/transportation/migrations"]
 typeCheckingMode = "strict"
 reportUnusedImport = false
 reportIncompatibleVariableOverride = false
