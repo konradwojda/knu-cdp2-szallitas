@@ -25,7 +25,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 def line(request: HttpRequest, line_id: int) -> HttpResponse:
     line = get_object_or_404(Line, pk=line_id)
-    patterns = Pattern.objects.filter(line__id=line_id)
+    patterns = Pattern.objects.filter(line__id=line_id).prefetch_related("pattern_stop_set__stop")
 
     context = {
         "line": line,
